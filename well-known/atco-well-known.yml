@@ -1,0 +1,116 @@
+generated: '2026-07-27'
+method: searched
+source: live HTTP probes, 2026-07-27
+summary:
+  hosts_probed: 6
+  documents_found: 0
+  note: >-
+    ATCO serves no /.well-known/ discovery documents on any of its web properties. The API host
+    is Esri's shared ArcGIS Online tenant infrastructure (services7.arcgis.com), which returns
+    403 for /.well-known/* — that is Esri's edge, not an ATCO decision, and nothing under it
+    would be an ATCO artifact in any case. Recorded as negative evidence: every path below was
+    fetched, not assumed.
+hosts:
+- host: https://services7.arcgis.com
+  role: API host (ArcGIS Online hosted feature services, tenant cw2emabghNLkoYlB)
+  operator: Esri
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  note: >-
+    The ArcGIS platform does expose its own auth metadata, but through the ArcGIS REST
+    convention rather than /.well-known — GET /cw2emabghNLkoYlB/arcgis/rest/info?f=json (HTTP 200)
+    returns isTokenBasedSecurity true and tokenServicesUrl https://www.arcgis.com/sharing/generateToken.
+    That is captured in authentication/atco-authentication.yml. It is not used by this service,
+    which is shared publicly and anonymous.
+- host: https://www.atco.com
+  role: corporate website
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://electric.atco.com
+  role: ATCO Electric — publisher of the hosting capacity map
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://gas.atco.com
+  role: ATCO Gas
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://www.atcoenergy.com
+  role: ATCO Energy — competitive Alberta retailer
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://store.atco.com
+  role: Salesforce CloudCraze customer commerce login (My Account)
+  documents:
+  - path: /.well-known/security.txt
+    status: 301
+  - path: /.well-known/openid-configuration
+    status: 301
+  - path: /.well-known/oauth-authorization-server
+    status: 301
+  - path: /.well-known/api-catalog
+    status: 301
+  - path: /.well-known/ai-plugin.json
+    status: 301
+  - path: /llms.txt
+    status: 301
+  note: >-
+    Every path returns a blanket 301 — a Salesforce Communities catch-all redirect, not a
+    discovery document. Nothing here is an API surface.
+security_txt:
+  present: false
+  note: >-
+    No RFC 9116 security.txt anywhere. See security/atco-vulnerability-disclosure — not written,
+    because the probe found no disclosure programme to record.

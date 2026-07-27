@@ -1,0 +1,140 @@
+generated: '2026-07-27'
+method: derived
+source:
+- openapi/atco-electric-hosting-capacity-layer-0.esri.json
+- openapi/atco-electric-hosting-capacity-featureserver.esri.json
+- live anonymous probes of the running service, 2026-07-27
+- review.yml (register checks against the Australian CDR register and the Green Button Alliance)
+docs: null
+docs_note: >-
+  ATCO makes no conformance or compliance claim about any API anywhere on its estate. Every entry
+  below is an API Evangelist assertion derived from the service's own behaviour or from a
+  register check — not a restatement of a vendor claim. There is nothing to discount.
+standards:
+- id: arcgis-rest-feature-service
+  name: Esri ArcGIS REST Feature Service
+  conforms: true
+  evidence: >-
+    The service is an ArcGIS Online hosted feature service reporting currentVersion 12 with
+    capabilities "Query". It implements the standard /FeatureServer, /FeatureServer/{layerId},
+    /query and /queryTopFeatures resources and the standard parameter vocabulary, all verified
+    live on 2026-07-27. This is the only machine-readable API convention ATCO publishes.
+  reference: https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/
+- id: rfc7946-geojson
+  name: GeoJSON (RFC 7946)
+  conforms: true
+  evidence: >-
+    supportedQueryFormats includes geoJSON; GET /0/query?...&f=geojson returned a valid RFC 7946
+    FeatureCollection with type/features/geometry/properties members (verified 2026-07-27).
+  reference: https://www.rfc-editor.org/rfc/rfc7946
+- id: cors
+  name: Cross-Origin Resource Sharing
+  conforms: true
+  evidence: 'Access-Control-Allow-Origin: * returned on query responses (verified 2026-07-27).'
+- id: http-caching
+  name: HTTP caching (RFC 9111)
+  conforms: partial
+  evidence: >-
+    'Cache-Control: public, max-age=30, s-maxage=30' is returned and the layer declares
+    cacheMaxAge 30. No ETag or Last-Modified was observed, so conditional requests are not
+    supported.
+- id: tls-1-3
+  name: TLS 1.3
+  conforms: true
+  evidence: services7.arcgis.com negotiates TLSv1.3 and returns HSTS max-age 63072000 (probed 2026-07-27).
+- id: rfc9457-problem-details
+  name: Problem Details for HTTP APIs (RFC 9457)
+  conforms: false
+  evidence: >-
+    Errors use the Esri `{"error":{code,message,details}}` envelope and are returned with HTTP
+    status 200 rather than a 4xx. Neither the media type application/problem+json nor correct
+    status-code semantics are used. See errors/atco-problem-types.yml.
+- id: openapi
+  name: OpenAPI Specification
+  conforms: false
+  evidence: >-
+    ATCO publishes no OpenAPI or Swagger document anywhere on its estate — /openapi.json,
+    /swagger.json and /api-docs return 404 on every ATCO host, and there is no developer portal.
+    The OpenAPI in openapi/ is an API Evangelist generation from the Esri descriptors, not an
+    ATCO artifact.
+- id: ogc-api-features
+  name: OGC API — Features
+  conforms: false
+  evidence: >-
+    No /collections, /conformance or landing-page resource is served. The service implements the
+    proprietary Esri REST convention rather than the OGC standard.
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: >-
+    The API is anonymous. No securityScheme exists, /.well-known/oauth-authorization-server is
+    not served, and no token is required or accepted for this publicly shared service.
+- id: openid-connect
+  name: OpenID Connect Discovery
+  conforms: false
+  evidence: >-
+    /.well-known/openid-configuration returned 404 on www.atco.com, electric.atco.com,
+    gas.atco.com and www.atcoenergy.com (probed 2026-07-27).
+- id: rfc9116-security-txt
+  name: security.txt (RFC 9116)
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on every ATCO host (probed 2026-07-27).
+- id: rfc8594-sunset
+  name: Sunset HTTP header (RFC 8594)
+  conforms: false
+  evidence: No Sunset or Deprecation header is emitted and no deprecation policy is published.
+- id: green-button-espi
+  name: Green Button / NAESB ESPI
+  conforms: false
+  evidence: >-
+    ATCO does not appear on https://www.greenbuttonalliance.org/members (HTTP 200, zero
+    case-insensitive matches for "atco"), and the string "green button" appears on none of
+    atco.com, electric.atco.com, gas.atco.com or atcoenergy.com. No Green Button mandate reaches
+    Alberta — Ontario Regulation 633/21 binds Ontario local distribution companies only.
+- id: cdr-consumer-data-standards
+  name: Australian Consumer Data Right — Energy
+  conforms: false
+  evidence: >-
+    GET https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary (HTTP 200,
+    x-v 1) returned 84 designated energy data holder brands on 2026-07-27; none matches "atco".
+    ATCO Australia distributes gas in Western Australia, which is outside the National Electricity
+    Market that the CDR energy designation covers.
+- id: iec-cim-61968
+  name: IEC CIM 61968 / 61970
+  conforms: false
+  evidence: >-
+    The hosting capacity field set (FEEDER, PHASE, SUB_NAME, SUB_NUM, DER_CAP_KW) is a flat CYME
+    study export, not a CIM profile. No CIM reference appears anywhere on the ATCO estate.
+- id: ocpp
+  name: Open Charge Point Protocol
+  conforms: false
+  evidence: >-
+    ATCO runs EV charging programmes (Peaks to Prairies, Alberta EV Corridor) but publishes no
+    OCPP surface and no OCPP reference.
+- id: ocpi
+  name: Open Charge Point Interface
+  conforms: false
+  evidence: No OCPI reference or endpoint found on any ATCO property.
+- id: openadr
+  name: OpenADR
+  conforms: false
+  evidence: No demand-response API or OpenADR reference found.
+- id: ieee-2030-5
+  name: IEEE 2030.5 (Smart Energy Profile)
+  conforms: false
+  evidence: >-
+    Notable given the DER subject matter — ATCO publishes hosting capacity for DER
+    interconnection but no IEEE 2030.5 DER management interface.
+compliance_program:
+  published: false
+  certifications: []
+  note: >-
+    No trust centre, no SOC 2 / ISO 27001 / PCI / HIPAA / FedRAMP claim, and no security or
+    compliance page was found. trust.atco.com and security.atco.com do not resolve;
+    /security, /responsible-disclosure and /cyber-security return 404 on www.atco.com. Because
+    no compliance programme is published, NO `Compliance` pointer is emitted in apis.yml.
+related:
+- security/atco-domain-security.yml
+- authentication/atco-authentication.yml
+- errors/atco-problem-types.yml
+- review.yml

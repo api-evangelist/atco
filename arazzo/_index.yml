@@ -1,0 +1,18 @@
+generated: '2026-07-27'
+method: derived
+source: arazzo/*.yml
+workflows:
+- file: atco-der-siting-shortlist.yml
+  workflowId: der-siting-shortlist
+  title: ATCO Electric DER siting shortlist
+  summary: >-
+    Rank ATCO Electric's 135 Alberta substations by DER hosting capacity using server-side
+    statistics, drill into the best feeders, size the result, then export only the qualifying
+    feeder segments as WGS84 GeoJSON — five anonymous reads instead of 880,623 features.
+  api: openapi/atco-electric-hosting-capacity-openapi.yml
+  auth: none
+  operations:
+  - getHostingCapacityLayerInfo
+  - queryHostingCapacity
+  - queryTopHostingCapacityFeatures
+  - queryHostingCapacityByPost

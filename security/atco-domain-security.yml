@@ -1,0 +1,125 @@
+generated: '2026-07-27'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+note: >-
+  The API host is not an ATCO domain. ATCO Electric's only public API is served from Esri's
+  shared ArcGIS Online tenant infrastructure (services7.arcgis.com), so the security posture that
+  actually protects the API belongs to Esri, while ATCO's own domains carry no API at all. Both
+  are recorded below and labelled.
+hosts:
+- host: services7.arcgis.com
+  role: API host (ArcGIS Online hosted feature services)
+  operator: Esri
+  atco_controlled: false
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 13 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+  cors_allow_origin: '*'
+- host: www.atco.com
+  role: corporate website
+  operator: ATCO
+  atco_controlled: true
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 15 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31557600
+- host: electric.atco.com
+  role: ATCO Electric — publisher of the hosting capacity map
+  operator: ATCO
+  atco_controlled: true
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 15 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31557600
+- host: gas.atco.com
+  role: ATCO Gas
+  operator: ATCO
+  atco_controlled: true
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 15 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31557600
+- host: www.atcoenergy.com
+  role: ATCO Energy — competitive Alberta retailer (Webflow-hosted)
+  operator: ATCO
+  atco_controlled: true
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 25 21:27:28 2026 GMT
+  hsts: false
+  hsts_max_age: null
+- host: store.atco.com
+  role: Salesforce CloudCraze customer commerce login (My Account)
+  operator: Salesforce (on ATCO's behalf)
+  atco_controlled: partial
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep  7 14:52:11 2026 GMT
+  hsts: false
+  hsts_max_age: null
+  note: >-
+    This is where a customer's own usage and billing data lives. It carries no HSTS, which is the
+    weakest posture on the estate and sits on the most sensitive surface.
+- host: poweroutage.atco.com
+  role: customer outage map (Flutter single-page app)
+  operator: ATCO
+  atco_controlled: true
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 21 19:10:47 2026 GMT
+  hsts: true
+  hsts_max_age: 31556926
+domains:
+- domain: atco.com
+  atco_controlled: true
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none
+  note: >-
+    No DNSSEC, no CAA record, and DMARC is at p=none — monitoring only, no enforcement. All three
+    are real gaps for a critical-infrastructure operator.
+- domain: atcoenergy.com
+  atco_controlled: true
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none
+  spf_record: 'v=spf1 ip4:192.210.5.0/24 ip4:192.210.10.0/24 ip4:141.118.20.0/24 include:aspmx.pardot.com include:_spf.qualtrics.com ~all'
+  dmarc_record: 'v=DMARC1; p=none; rua=mailto:xtz8hoer@ag.dmarcian.com'
+- domain: arcgis.com
+  atco_controlled: false
+  operator: Esri
+  dnssec: true
+  caa:
+  - 0 issue "amazon.com"
+  - 0 issue "amazonaws.com"
+  - 0 issue "amazontrust.com"
+  - 0 issue "awstrust.com"
+  - 0 issue "digicert.com"
+  - 0 issue "letsencrypt.org"
+  - 0 issuewild "amazon.com"
+  - 0 issuewild "amazonaws.com"
+  - 0 issuewild "amazontrust.com"
+  - 0 issuewild "awstrust.com"
+  - 0 issuewild "digicert.com"
+  - 0 iodef "mailto:vkeymaster@esri.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+  note: >-
+    Recorded for completeness because it is the API host's registrable domain. Esri's posture is
+    materially stronger than ATCO's — DNSSEC signed, a full CAA policy with an iodef contact, and
+    DMARC at p=reject. This is inherited by the ATCO API, not earned by ATCO.
+summary:
+  atco_domains_with_dnssec: 0
+  atco_domains_with_caa: 0
+  atco_domains_with_dmarc_enforcement: 0
+  atco_hosts_without_hsts: [www.atcoenergy.com, store.atco.com]

@@ -1,0 +1,150 @@
+generated: '2026-07-27'
+method: derived
+source:
+- openapi/atco-electric-hosting-capacity-layer-0.esri.json
+- openapi/atco-electric-hosting-capacity-openapi.yml
+- live anonymous queries against the running service, 2026-07-27
+docs: null
+docs_note: >-
+  ATCO publishes no object reference or data dictionary. Field names, types, aliases and lengths
+  below come verbatim from the layer descriptor; cardinalities and value samples come from live
+  anonymous queries. Where a field's intent is undocumented, that is stated rather than guessed.
+summary:
+  entities: 1
+  relationships: 0
+  relationships_note: >-
+    The layer declares `relationships: []` — there are no related tables and no joins. The model
+    is a single flat feature class. The substation and feeder hierarchy below is implicit in
+    attribute values, not modelled as entities.
+  feature_count: 880623
+  feature_count_verified: '2026-07-27'
+entities:
+- name: HostingCapacitySegment
+  layer: 0
+  layer_name: Hosting Capacity (KW)
+  type: Feature Layer
+  geometry_type: esriGeometryPolyline
+  primary_key: OBJECTID
+  display_field: SUB_NAME
+  spatial_reference:
+    wkid: 102185
+    latest_wkid: 3401
+    name: NAD83 / Alberta 3TM ref merid 115 W
+    units: esriMeters
+  extent:
+    xmin: -320923.26889999956
+    ymin: 5629354.7049
+    xmax: 351844.33800000045
+    ymax: 6582097.7320000008
+  description: >-
+    One feeder segment of ATCO Electric's Alberta distribution system, carrying the distributed
+    energy resource hosting capacity in kilowatts that the segment can accept. Sourced from a
+    CYME hosting capacity study ("CYME Hosting Capacity Map" is the service description).
+  count: 880623
+  fields:
+  - name: OBJECTID
+    type: esriFieldTypeOID
+    role: primary_key
+    nullable: false
+    editable: false
+  - name: FEEDER
+    alias: CIRCUIT
+    type: esriFieldTypeString
+    length: 200
+    role: grouping_key
+    description: Feeder / circuit identifier. Groups segments into a distribution circuit.
+    sample: 700-508
+  - name: PHASE
+    type: esriFieldTypeString
+    length: 200
+    role: attribute
+    description: Phase designation of the segment.
+    samples: [B, AB]
+  - name: SUB_NAME
+    type: esriFieldTypeString
+    length: 200
+    role: grouping_key
+    description: Substation name. The layer's displayField and the natural top-level grouping.
+    distinct_values: 135
+    distinct_verified: '2026-07-27 via returnDistinctValues=true'
+    sample: BONNYVILLE
+  - name: SUB_NUM
+    type: esriFieldTypeString
+    length: 200
+    role: grouping_key
+    description: Substation number. Pairs with SUB_NAME.
+    sample: 700S
+  - name: DATELOADED
+    type: esriFieldTypeString
+    length: 200
+    role: provenance
+    description: >-
+      CYME study load date as an unpadded YYYYMMDD string. Stored as a string, not a date field,
+      so it cannot be filtered with date semantics.
+    sample: '20251031'
+  - name: DER_CAP_KW
+    type: esriFieldTypeDouble
+    role: measure
+    unit: kW
+    description: DER hosting capacity for the segment. The field the map's class-breaks renderer symbolizes.
+    sample: 62.9
+    renderer_class_breaks: ['<1000', '1000-4999', '5000-9999', '10000-14999', '>=15000']
+  - name: DER_CAP_KW1
+    type: esriFieldTypeDouble
+    alias: DER_CAP_KW
+    role: measure
+    unit: kW
+    description: >-
+      Second capacity field carrying the same alias as DER_CAP_KW. Observed equal to DER_CAP_KW
+      in every sampled feature. ATCO publishes no field definitions, so the intended distinction
+      (e.g. a second study scenario) is undocumented and is not guessed here.
+    sample: 62.9
+  - name: PROJECT_AREA
+    alias: PROJ_AREA
+    type: esriFieldTypeString
+    length: 50
+    role: attribute
+    description: Project area. Null in sampled features.
+  - name: SE_ANNO_CAD_DATA
+    type: esriFieldTypeBlob
+    role: internal
+    description: ArcSDE annotation CAD blob carried over from the source geodatabase. Empty in sampled features; not useful to consumers.
+  - name: Shape__Length
+    type: esriFieldTypeDouble
+    role: derived_geometry
+    unit: metres
+    editable: false
+    description: Segment length, maintained by the geometry engine.
+    sample: 678.11243656856732
+  indexes:
+  - fields: OBJECTID
+    unique: true
+    type: Attribute
+  - fields: SHAPE
+    unique: false
+    type: Spatial
+  - fields: Shape__Length
+    unique: false
+    type: Attribute
+relationships: []
+implicit_hierarchy:
+  note: >-
+    Not modelled as entities by the service, but present in the attribute values and usable as a
+    grouping hierarchy in queries via groupByFieldsForStatistics or /0/queryTopFeatures.
+  levels:
+  - level: substation
+    fields: [SUB_NAME, SUB_NUM]
+    cardinality: 135 distinct SUB_NAME values
+  - level: feeder
+    fields: [FEEDER]
+    parent: substation
+  - level: segment
+    fields: [OBJECTID]
+    parent: feeder
+    cardinality: 880623
+  example_verified: >-
+    where=SUB_NAME='BONNYVILLE' returned 34,009 segments (2026-07-27).
+id_prefixes: []
+id_prefixes_note: There are no typed/prefixed identifiers. OBJECTID is a plain integer.
+render: null
+render_note: No subway/ or ERD visual exists for this repo; a single-entity flat model does not warrant one.

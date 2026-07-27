@@ -1,0 +1,31 @@
+generated: '2026-07-27'
+method: generated
+source: openapi/atco-electric-hosting-capacity-openapi.yml
+note: >-
+  ATCO publishes no agent skills and no AGENTS.md (searched the whole estate; there is no
+  developer portal and no GitHub organization). These are API Evangelist generations grounded in
+  the operationIds of the OpenAPI this pipeline generated from ATCO's own Esri service
+  descriptors. Every operationId referenced exists verbatim in that spec.
+skills:
+- file: atco-query-hosting-capacity.md
+  name: Query ATCO Electric DER hosting capacity
+  description: >-
+    Find how much DER capacity the Alberta distribution grid can accept on a given feeder,
+    substation or map area, using the public anonymous ArcGIS REST feature service.
+  api: openapi/atco-electric-hosting-capacity-openapi.yml
+  operations:
+  - getFeatureServiceInfo
+  - getHostingCapacityLayerInfo
+  - queryHostingCapacity
+  - queryHostingCapacityByPost
+  - queryTopHostingCapacityFeatures
+- file: atco-map-der-capacity-hotspots.md
+  name: Map ATCO Electric DER capacity hotspots for site selection
+  description: >-
+    Rank substations and feeders by available hosting capacity and produce a GeoJSON shortlist
+    for siting a solar, storage or micro-generation project.
+  api: openapi/atco-electric-hosting-capacity-openapi.yml
+  operations:
+  - getHostingCapacityLayerInfo
+  - queryHostingCapacity
+  - queryTopHostingCapacityFeatures

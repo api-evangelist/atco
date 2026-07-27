@@ -1,0 +1,173 @@
+arazzo: 1.0.1
+info:
+  title: ATCO Electric DER siting shortlist
+  version: 1.0.0
+  summary: >-
+    Go from ATCO Electric's whole Alberta distribution grid to a small, mapped shortlist of the
+    feeder segments with the most DER hosting capacity, without ever pulling all 880,623 features.
+  description: >-
+    A native workflow over ATCO Electric's public hosting capacity feature service. It records the
+    data vintage, ranks the 135 substations by peak capacity using server-side statistics, picks
+    the best feeder in the chosen substation, sizes the result, then pulls only the surviving
+    segments as WGS84 GeoJSON. Every step is an anonymous read — no key, token or signup. Written
+    against openapi/atco-electric-hosting-capacity-openapi.yml; every operationId below exists
+    verbatim in that spec.
+sourceDescriptions:
+- name: hostingCapacity
+  url: ../openapi/atco-electric-hosting-capacity-openapi.yml
+  type: openapi
+workflows:
+- workflowId: der-siting-shortlist
+  summary: Rank substations by DER hosting capacity and export a GeoJSON shortlist
+  description: >-
+    Inputs default to a whole-grid scan. Narrow `substation` once step 2 has told you which
+    substations lead, and raise `minCapacityKw` to match ATCO's own top map class break (15,000 kW).
+  inputs:
+    type: object
+    properties:
+      substation:
+        type: string
+        description: SUB_NAME to drill into. Leave empty on the first pass and fill it from step 2.
+        default: BONNYVILLE
+      minCapacityKw:
+        type: number
+        description: Minimum DER_CAP_KW for a segment to make the shortlist.
+        default: 15000
+      pageSize:
+        type: integer
+        description: Features per page. maxRecordCount is 1000 with geometry.
+        default: 1000
+  steps:
+  - stepId: record-vintage
+    description: >-
+      Capture the layer's edit timestamps. There is no changelog for this API, so
+      editingInfo.dataLastEditDate is the only provenance a downstream report can cite.
+    operationId: getHostingCapacityLayerInfo
+    parameters:
+    - name: f
+      in: query
+      value: json
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.editingInfo.dataLastEditDate != null
+    outputs:
+      dataLastEditDate: $response.body#/editingInfo/dataLastEditDate
+      maxRecordCount: $response.body#/maxRecordCount
+  - stepId: rank-substations
+    description: >-
+      One request summarizes the entire grid — max, average and segment count per substation,
+      ordered by peak capacity. 135 rows instead of 880,623 features.
+    operationId: queryHostingCapacity
+    parameters:
+    - name: where
+      in: query
+      value: 1=1
+    - name: groupByFieldsForStatistics
+      in: query
+      value: SUB_NAME
+    - name: outStatistics
+      in: query
+      value: '[{"statisticType":"max","onStatisticField":"DER_CAP_KW","outStatisticFieldName":"max_kw"},{"statisticType":"avg","onStatisticField":"DER_CAP_KW","outStatisticFieldName":"avg_kw"},{"statisticType":"count","onStatisticField":"OBJECTID","outStatisticFieldName":"segments"}]'
+    - name: orderByFields
+      in: query
+      value: max_kw DESC
+    - name: returnGeometry
+      in: query
+      value: false
+    - name: f
+      in: query
+      value: json
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.error == null
+      type: jsonpath
+    outputs:
+      rankedSubstations: $response.body#/features
+  - stepId: top-feeder-per-circuit
+    description: >-
+      Within the chosen substation, return the single highest-capacity segment on each feeder.
+      Note that queryTopFeatures requires BOTH topFilter and where — omitting where returns
+      "No where clause specified." with HTTP 200.
+    operationId: queryTopHostingCapacityFeatures
+    parameters:
+    - name: where
+      in: query
+      value: "SUB_NAME='{$inputs.substation}'"
+    - name: topFilter
+      in: query
+      value: '{"groupByFields":"FEEDER","topCount":1,"orderByFields":"DER_CAP_KW DESC"}'
+    - name: outFields
+      in: query
+      value: SUB_NAME,SUB_NUM,FEEDER,PHASE,DER_CAP_KW
+    - name: returnGeometry
+      in: query
+      value: false
+    - name: f
+      in: query
+      value: json
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      topFeeders: $response.body#/features
+  - stepId: size-the-shortlist
+    description: >-
+      Count before fetching. A single substation can hold tens of thousands of segments — the
+      BONNYVILLE substation returned 34,009 on 2026-07-27.
+    operationId: queryHostingCapacityByPost
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        where: "SUB_NAME='{$inputs.substation}'"
+        returnCountOnly: true
+        f: json
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.count != null
+      type: jsonpath
+    outputs:
+      shortlistCount: $response.body#/count
+  - stepId: export-shortlist-geojson
+    description: >-
+      Pull only the qualifying segments, reprojected to WGS84 so the output drops straight into a
+      web map. Page on properties.exceededTransferLimit, ordering by OBJECTID for stable paging.
+    operationId: queryHostingCapacity
+    parameters:
+    - name: where
+      in: query
+      value: "SUB_NAME='{$inputs.substation}' AND DER_CAP_KW > {$inputs.minCapacityKw}"
+    - name: outFields
+      in: query
+      value: OBJECTID,SUB_NAME,SUB_NUM,FEEDER,PHASE,DER_CAP_KW,DATELOADED
+    - name: returnGeometry
+      in: query
+      value: true
+    - name: outSR
+      in: query
+      value: '4326'
+    - name: orderByFields
+      in: query
+      value: OBJECTID
+    - name: resultOffset
+      in: query
+      value: '0'
+    - name: resultRecordCount
+      in: query
+      value: $inputs.pageSize
+    - name: f
+      in: query
+      value: geojson
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      shortlist: $response.body#/features
+      morePages: $response.body#/properties/exceededTransferLimit
+  outputs:
+    dataLastEditDate: $steps.record-vintage.outputs.dataLastEditDate
+    rankedSubstations: $steps.rank-substations.outputs.rankedSubstations
+    topFeeders: $steps.top-feeder-per-circuit.outputs.topFeeders
+    shortlistCount: $steps.size-the-shortlist.outputs.shortlistCount
+    shortlist: $steps.export-shortlist-geojson.outputs.shortlist
+    morePages: $steps.export-shortlist-geojson.outputs.morePages

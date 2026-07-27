@@ -1,0 +1,90 @@
+generated: '2026-07-27'
+method: derived
+source:
+- openapi/atco-electric-hosting-capacity-openapi.yml
+- live anonymous probes of the running service, 2026-07-27
+format: esri-arcgis-rest-error
+format_note: >-
+  NOT RFC 9457. ATCO publishes no error reference; this catalogue was derived by provoking real
+  errors against the live service and recording the verbatim responses. The envelope is the Esri
+  ArcGIS REST error object.
+envelope:
+  shape: '{"error": {"code": <int>, "message": <string>, "details": [<string>, ...]}}'
+  content_type: application/json
+  transport_status: 200
+  critical_note: >-
+    The single most important thing to know about this API: errors are returned with HTTP status
+    200, and the numeric `error.code` inside the body is what carries the failure. An HTTP-status
+    check alone will report every one of these as a success. Clients must parse the body and
+    branch on the presence of an `error` member.
+problems:
+- code: 400
+  transport_status: 200
+  title: Invalid query parameters
+  message: Cannot perform query. Invalid query parameters.
+  details:
+  - "'where' parameter is invalid"
+  cause: The `where` clause is not a valid standardized SQL expression over the layer's fields.
+  remediation: >-
+    Use a standardized SQL WHERE clause over the declared fields (FEEDER, PHASE, SUB_NAME,
+    SUB_NUM, DATELOADED, DER_CAP_KW, DER_CAP_KW1, PROJECT_AREA, OBJECTID, Shape__Length). Quote
+    string literals with single quotes. Use `1=1` to match all features.
+  source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#queryHostingCapacity
+  verified: 'GET /0/query?where=NOPE&f=json — 2026-07-27'
+- code: 400
+  transport_status: 200
+  title: Layer not found
+  message: ''
+  details:
+  - 'The requested layer (layerId: 9) was not found.'
+  cause: A layer id other than 0 was requested. The service publishes exactly one layer, id 0.
+  remediation: Request layer 0. Enumerate layers with GET / (getFeatureServiceInfo).
+  source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#getHostingCapacityLayerInfo
+  verified: 'GET /FeatureServer/9?f=json — 2026-07-27'
+- code: 400
+  transport_status: 200
+  title: Missing required query clause
+  message: ''
+  details:
+  - Unable to perform query. Please check your parameters.
+  - No where clause specified.
+  cause: >-
+    /0/queryTopFeatures was called with a topFilter but no `where` clause. The top-features
+    operation requires both.
+  remediation: Supply `where=1=1` (or a narrower clause) alongside `topFilter`.
+  source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#queryTopHostingCapacityFeatures
+  verified: 'GET /0/queryTopFeatures?topFilter=... (no where) — 2026-07-27'
+not_observed:
+  note: >-
+    The following ArcGIS REST error classes are documented by Esri but were NOT observed against
+    this service, because it is shared publicly and requires no token. They are recorded as
+    absent, not asserted as present.
+  codes:
+  - code: 498
+    title: Invalid token
+    observed: false
+  - code: 499
+    title: Token required
+    observed: false
+  - code: 403
+    title: Permission denied
+    observed: false
+  - code: 499
+    title: Rate limited
+    observed: false
+    note: No rate-limit error was reachable; ATCO publishes no rate-limit policy.
+soft_failures:
+  note: >-
+    Two non-error conditions are easy to mistake for errors or for completeness.
+  cases:
+  - condition: exceededTransferLimit true
+    meaning: >-
+      The response is a partial page, not an error. More features matched than maxRecordCount
+      allowed. Paginate with resultOffset / resultRecordCount.
+  - condition: omitted `f` parameter
+    meaning: >-
+      The service returns the ArcGIS HTML services-directory page with HTTP 200, not JSON. A
+      JSON parser will fail on HTML. Always send f=json or f=geojson.
+related:
+- conventions/atco-conventions.yml
+- openapi/atco-electric-hosting-capacity-openapi.yml

@@ -1,0 +1,70 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  Live anonymous probes of the ATCO Electric hosting capacity feature service and of every
+  ATCO web property, 2026-07-27. Confirms the negative finding already recorded in review.yml.
+docs: null
+docs_note: >-
+  ATCO publishes no API authentication documentation of any kind. There is no developer portal,
+  no /docs, no /api and no auth page on atco.com, electric.atco.com, gas.atco.com or
+  atcoenergy.com. This profile was established by probing the running service rather than by
+  reading a document.
+summary:
+  types: []
+  api_key_in: []
+  oauth2_flows: []
+  anonymous: true
+schemes: []
+profile:
+  scheme: none
+  detail: >-
+    The only public ATCO API — the ATCO Electric DER hosting capacity feature service — accepts
+    completely anonymous HTTPS requests. No `token` query parameter is required, no
+    Authorization header is honoured or needed, and no ArcGIS token error (code 498/499) is
+    returned for an unauthenticated request. A GET against
+    /FeatureServer/0/query?where=1=1&returnCountOnly=true&f=json returned {"count":880623} with
+    no credential of any kind on 2026-07-27.
+  signup_required: false
+  api_key_required: false
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+  referer_check: false
+  licence_click_through: false
+  cors:
+    access_control_allow_origin: '*'
+    note: >-
+      The service returns a wildcard CORS header, so it is directly callable from browser
+      JavaScript with no proxy.
+upstream_token_service:
+  note: >-
+    The ArcGIS platform underneath does support token-based security — /arcgis/rest/info reports
+    isTokenBasedSecurity true with tokenServicesUrl https://www.arcgis.com/sharing/generateToken.
+    That is the Esri ArcGIS Online platform capability, not something ATCO has enabled on this
+    service. The AGO_HostingCapacity service item is shared publicly (access "public"), so no
+    token is used.
+  rest_info: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/info?f=json
+  token_services_url: https://www.arcgis.com/sharing/generateToken
+consumer_data_auth:
+  available: false
+  note: >-
+    There is no machine authentication path to a customer's own energy usage or billing data.
+    ATCO Energy routes My Account (https://myaccount.atcoenergy.com, HTTP 301) to
+    https://store.atco.com/ccrz__CCSiteLogin, a Salesforce CloudCraze human commerce login. No
+    OAuth authorization server, no consent flow, no third-party onboarding and no client
+    registration exists. /.well-known/openid-configuration returns 404 on every ATCO host.
+discovery_probes:
+- url: https://www.atco.com/.well-known/openid-configuration
+  status: 404
+- url: https://www.atcoenergy.com/.well-known/openid-configuration
+  status: 404
+- url: https://electric.atco.com/.well-known/openid-configuration
+  status: 404
+- url: https://gas.atco.com/.well-known/openid-configuration
+  status: 404
+- url: https://services7.arcgis.com/.well-known/oauth-authorization-server
+  status: 403
+related:
+- scopes/: not applicable — no OAuth surface exists, so no scope artifact is emitted
+- conventions/atco-conventions.yml
+- security/atco-domain-security.yml

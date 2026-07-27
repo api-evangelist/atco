@@ -36,7 +36,7 @@ accessModel:
   - documentation
   generated: '2026-07-27'
   method: manual
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+image: https://www.atco.com/favicon.ico
 tags:
 - Energy
 - Canada
@@ -92,6 +92,20 @@ apis:
     url: openapi/atco-electric-hosting-capacity-featureserver.esri.json
   - type: ServiceDescriptor
     url: openapi/atco-electric-hosting-capacity-layer-0.esri.json
+  - type: OpenAPI
+    name: OpenAPI 3.1 (API Evangelist generated from the Esri descriptors — ATCO publishes none)
+    url: openapi/atco-electric-hosting-capacity-openapi.yml
+  - type: Overlay
+    url: overlays/atco-electric-hosting-capacity-overlay.yaml
+  - type: Examples
+    url: examples/atco-hosting-capacity-examples.yml
+  - type: DataModel
+    url: data-model/atco-data-model.yml
+  - type: ErrorCatalog
+    url: errors/atco-problem-types.yml
+  - type: Arazzo
+    name: ATCO Electric DER siting shortlist
+    url: arazzo/atco-der-siting-shortlist.yml
   - type: Documentation
     url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
   - type: Documentation
@@ -101,6 +115,30 @@ apis:
   - type: Standard
     url: https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/
 common:
+- type: AgenticAccess
+  url: agentic-access/atco-agentic-access.yml
+- type: DomainSecurity
+  url: security/atco-domain-security.yml
+- type: Authentication
+  name: Authentication profile — anonymous, no credential of any kind
+  url: authentication/atco-authentication.yml
+- type: Conventions
+  url: conventions/atco-conventions.yml
+- type: Lifecycle
+  url: lifecycle/atco-lifecycle.yml
+- type: Conformance
+  url: conformance/atco-conformance.yml
+- type: WellKnown
+  url: well-known/atco-well-known.yml
+- type: LLMsTxt
+  url: llms/atco-llms.txt
+- type: MCPServer
+  name: Candidate MCP tool set (derived — ATCO publishes no MCP server)
+  url: mcp/atco-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/atco-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
 - type: Website
   url: https://www.atco.com/
 - type: About
@@ -113,6 +151,19 @@ common:
   url: https://www.atcoenergy.com/
 - type: SignIn
   url: https://store.atco.com/ccrz__CCSiteLogin
+- type: Login
+  url: https://store.atco.com/ccrz__CCSiteLogin
+- type: PrivacyPolicy
+  url: https://www.atco.com/en-ca/privacy.html
+- type: TermsOfService
+  url: https://www.atco.com/en-ca/terms-of-use.html
+- type: Support
+  name: General ATCO contact — there is no developer support channel
+  url: https://www.atco.com/en-ca/about-us/contact.html
+- type: News
+  url: https://www.atco.com/en-ca/about-us/news.html
+- type: Investors
+  url: https://www.atco.com/en-ca/investors.html
 - type: LinkedIn
   url: https://www.linkedin.com/company/atco-group
 - type: Regulator

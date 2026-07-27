@@ -1,0 +1,177 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  Real responses captured from live, anonymous requests against
+  https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
+  on 2026-07-27. Nothing below is synthesized — every payload is a verbatim (occasionally
+  truncated, and marked as such) capture.
+api: ATCO Electric Hosting Capacity Feature Service
+spec: openapi/atco-electric-hosting-capacity-openapi.yml
+examples:
+- name: Total feature count
+  operationId: queryHostingCapacity
+  request:
+    method: GET
+    url: /0/query?where=1%3D1&returnCountOnly=true&f=json
+  response:
+    http_status: 200
+    body:
+      count: 880623
+- name: Count for one substation (POST form)
+  operationId: queryHostingCapacityByPost
+  request:
+    method: POST
+    url: /0/query
+    content_type: application/x-www-form-urlencoded
+    body:
+      where: "SUB_NAME='BONNYVILLE'"
+      returnCountOnly: 'true'
+      f: json
+  response:
+    http_status: 200
+    body:
+      count: 34009
+- name: Two feature attributes as GeoJSON
+  operationId: queryHostingCapacity
+  request:
+    method: GET
+    url: /0/query?where=1%3D1&outFields=*&resultRecordCount=2&returnGeometry=false&f=geojson
+  response:
+    http_status: 200
+    content_type: application/json
+    body:
+      type: FeatureCollection
+      properties:
+        exceededTransferLimit: true
+      features:
+      - type: Feature
+        id: 1
+        geometry: null
+        properties:
+          OBJECTID: 1
+          FEEDER: 700-508
+          PHASE: B
+          SUB_NAME: BONNYVILLE
+          SUB_NUM: 700S
+          DATELOADED: '20251031'
+          DER_CAP_KW: 62.9
+          DER_CAP_KW1: 62.9
+          PROJECT_AREA: null
+          SE_ANNO_CAD_DATA: ''
+          Shape__Length: 678.11243656856732
+      - type: Feature
+        id: 2
+        geometry: null
+        properties:
+          OBJECTID: 2
+          FEEDER: 700-508
+          PHASE: AB
+          SUB_NAME: BONNYVILLE
+          SUB_NUM: 700S
+          DATELOADED: '20251031'
+          DER_CAP_KW: 150.5
+          DER_CAP_KW1: 150.5
+          PROJECT_AREA: null
+          SE_ANNO_CAD_DATA: ''
+          Shape__Length: 864.8568776226839
+- name: Pagination past the first page
+  operationId: queryHostingCapacity
+  request:
+    method: GET
+    url: /0/query?where=1%3D1&resultOffset=1000&resultRecordCount=1&outFields=OBJECTID&returnGeometry=false&f=json
+  response:
+    http_status: 200
+    body:
+      objectIdFieldName: OBJECTID
+      uniqueIdField:
+        name: OBJECTID
+        isSystemMaintained: true
+      globalIdFieldName: ''
+      geometryType: esriGeometryPolyline
+      spatialReference:
+        wkid: 102185
+        latestWkid: 3401
+      fields:
+      - name: OBJECTID
+        type: esriFieldTypeOID
+        alias: OBJECTID
+        sqlType: sqlTypeOther
+        domain: null
+        defaultValue: null
+      exceededTransferLimit: true
+      features:
+      - attributes:
+          OBJECTID: 1001
+  note: Confirms resultOffset works and that exceededTransferLimit is the more-results signal.
+- name: Distinct substation names
+  operationId: queryHostingCapacity
+  request:
+    method: GET
+    url: /0/query?where=1%3D1&outFields=SUB_NAME&returnDistinctValues=true&returnGeometry=false&f=json
+  response:
+    http_status: 200
+    body_summary: A FeatureSet whose features[] carried 135 distinct SUB_NAME attribute values.
+    feature_count: 135
+- name: Top feature per substation
+  operationId: queryTopHostingCapacityFeatures
+  request:
+    method: GET
+    url: /0/queryTopFeatures
+    query:
+      topFilter: '{"groupByFields":"SUB_NAME","topCount":1,"orderByFields":"DER_CAP_KW DESC"}'
+      where: 1=1
+      outFields: SUB_NAME,DER_CAP_KW
+      returnGeometry: 'false'
+      resultRecordCount: '2'
+      f: json
+  response:
+    http_status: 200
+    body_summary: >-
+      A FeatureSet with objectIdFieldName OBJECTID, geometryType esriGeometryPolyline and a
+      fields[] array describing SUB_NAME and DER_CAP_KW (response truncated at capture).
+error_examples:
+- name: Invalid where clause
+  operationId: queryHostingCapacity
+  request:
+    method: GET
+    url: /0/query?where=NOPE&f=json
+  response:
+    http_status: 200
+    body:
+      error:
+        code: 400
+        message: Cannot perform query. Invalid query parameters.
+        details:
+        - "'where' parameter is invalid"
+- name: Nonexistent layer id
+  operationId: getHostingCapacityLayerInfo
+  request:
+    method: GET
+    url: /9?f=json
+  response:
+    http_status: 200
+    body:
+      error:
+        code: 400
+        message: ''
+        details:
+        - 'The requested layer (layerId: 9) was not found.'
+- name: queryTopFeatures without a where clause
+  operationId: queryTopHostingCapacityFeatures
+  request:
+    method: GET
+    url: /0/queryTopFeatures?topFilter=%7B...%7D&f=json
+  response:
+    http_status: 200
+    body:
+      error:
+        code: 400
+        message: ''
+        details:
+        - Unable to perform query. Please check your parameters.
+        - No where clause specified.
+response_headers_observed:
+  cache-control: 'public, max-age=30, s-maxage=30'
+  access-control-allow-origin: '*'
+  strict-transport-security: max-age=63072000
+  rate_limit_headers: none

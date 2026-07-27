@@ -1,0 +1,87 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  Live probes of the running service plus a sitemap and direct-URL search of every ATCO web
+  property, 2026-07-27. Negative findings are recorded as negative evidence, not as unknowns.
+versioning:
+  scheme: none — platform version only
+  current: 'currentVersion 12 (fullVersion 12.0.0)'
+  in_url: false
+  policy_url: null
+  detail: >-
+    ATCO publishes no API versioning policy. `currentVersion` is the Esri ArcGIS Online platform
+    release reported by the feature service and by /arcgis/rest/info; it changes when Esri
+    upgrades ArcGIS Online, not when ATCO changes the data or the schema. The service path
+    (AGO_HostingCapacity/FeatureServer) has no version segment, so there is no way for a consumer
+    to pin a version of the ATCO surface.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  detail: >-
+    No deprecation policy, no RFC 8594 Sunset or Deprecation header, and no advance-notice
+    commitment of any kind. The service item could be unshared or renamed without notice; there
+    is no contract preventing it. No Deprecation pointer is emitted in apis.yml because ATCO
+    publishes no deprecation policy.
+  deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  detail: >-
+    No SLA, no uptime target, no support commitment and no published usage terms. The ArcGIS
+    item record for the feature service (7b4d2b3dcecb4a509f34cbfc3587ff3e) has licenseInfo null
+    and accessInformation empty — ATCO attached no licence or attribution requirement.
+status_page:
+  atco_published: null
+  detail: >-
+    ATCO publishes no status page for this or any API. https://poweroutage.atco.com/map is an
+    electricity outage map for customers — a Flutter single-page app about the physical grid,
+    not an API status page — and is deliberately not recorded as one. No StatusPage pointer is
+    emitted in apis.yml.
+  upstream:
+    url: https://status.arcgis.com/
+    operator: Esri
+    note: >-
+      The service runs on Esri ArcGIS Online, so ArcGIS Online's own status page is the only
+      availability signal a consumer has. It is upstream infrastructure status published by Esri,
+      not an ATCO commitment, and it says nothing about whether ATCO keeps sharing this item.
+change_log:
+  url: null
+  detail: >-
+    No changelog, release notes or versioning page exists anywhere on the ATCO estate. The only
+    in-band change signal is the layer's own edit tracking.
+  in_band_signals:
+    layer_descriptor:
+      lastEditDate: 1761939339179
+      dataLastEditDate: 1761939339179
+      schemaLastEditDate: 1761939339179
+      human_readable: '2025-10-31T18:15:39Z'
+      note: >-
+        Poll GET /0?f=json and compare editingInfo.dataLastEditDate to detect a data refresh, and
+        schemaLastEditDate to detect a field change. This is the substitute for a changelog.
+    feature_field:
+      field: DATELOADED
+      observed_value: '20251031'
+      note: >-
+        Carries the CYME hosting capacity study load date per feature, as an unpadded YYYYMMDD
+        string. Consistent with the layer edit date, so a refresh is visible in the data itself.
+    item_record:
+      url: https://www.arcgis.com/sharing/rest/content/items/7b4d2b3dcecb4a509f34cbfc3587ff3e?f=json
+      modified: '2025-10-31'
+      note: The ArcGIS item `modified` timestamp is a third, independent change signal.
+cadence:
+  observed: >-
+    A single data load is visible (2025-10-31). ATCO publishes no refresh schedule, so cadence
+    cannot be established from one observation. hasStaticData is false, which means the service
+    is not frozen — it is editable and expected to be refreshed.
+support:
+  developer_channel: null
+  detail: >-
+    There is no developer support channel, no API contact address and no issue tracker. The only
+    published contact is the general ATCO Electric enquiry page at
+    https://electric.atco.com/en-ca/about-us/contact.html, which addresses grid connections, not
+    API consumers. No ATCO GitHub organization exists (api.github.com/orgs/atco returned 404).
+related:
+- conventions/atco-conventions.yml
+- conformance/atco-conformance.yml
+- security/atco-domain-security.yml

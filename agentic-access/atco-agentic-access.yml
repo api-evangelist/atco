@@ -1,0 +1,72 @@
+generated: '2026-07-27'
+method: generated
+source: openapi/atco-electric-hosting-capacity-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 5
+  by_action_class:
+    connected: 5
+  by_consequence:
+    read: 5
+  human_in_the_loop_required: 0
+  note: >-
+    All five operations are reads. The service advertises ArcGIS capabilities "Query" only —
+    there is no write surface. The POST form of /0/query was hand-corrected from the derive
+    script's HTTP-method heuristic, which had classified it acting/write.
+operations:
+- path: /
+  method: get
+  operationId: getFeatureServiceInfo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /0
+  method: get
+  operationId: getHostingCapacityLayerInfo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /0/query
+  method: get
+  operationId: queryHostingCapacity
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /0/query
+  method: post
+  operationId: queryHostingCapacityByPost
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+  note: >-
+    Hand-corrected from the derive script's method heuristic. This is a POST-shaped READ:
+    the service advertises capabilities "Query" only, so this operation is the form-encoded
+    variant of the GET query and mutates nothing.
+- path: /0/queryTopFeatures
+  method: get
+  operationId: queryTopHostingCapacityFeatures
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none

@@ -1,0 +1,156 @@
+generated: '2026-07-27'
+method: derived
+source:
+- openapi/atco-electric-hosting-capacity-openapi.yml
+- openapi/atco-electric-hosting-capacity-layer-0.esri.json
+- live anonymous probes of the running service, 2026-07-27
+docs: null
+docs_note: >-
+  ATCO publishes no API conventions documentation. Everything below was derived from the
+  service's own self-describing ArcGIS REST descriptors and confirmed against the live
+  endpoint. The governing upstream convention is the Esri ArcGIS REST Feature Service
+  specification (https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/),
+  which ATCO inherits by publishing on ArcGIS Online rather than by design choice.
+authentication:
+  style: none — anonymous HTTPS
+  detail: No key, token, signup, referer check or licence click-through. See authentication/atco-authentication.yml.
+idempotency:
+  supported: false
+  reason: >-
+    Read-only surface. The service advertises ArcGIS capabilities "Query" only, so there is no
+    write operation to make idempotent and no idempotency-key header exists. All five operations
+    (including the POST form of /0/query) are naturally idempotent reads. No Idempotency pointer
+    is emitted in apis.yml because the provider ships no idempotency contract.
+  header: null
+pagination:
+  supported: true
+  style: offset
+  advertised_by: layer descriptor advancedQueryCapabilities.supportsPagination = true
+  request_params:
+    offset: resultOffset
+    limit: resultRecordCount
+    order: orderByFields
+  response_fields:
+    more_results_signal: exceededTransferLimit
+    note: >-
+      `exceededTransferLimit: true` in the response body means more features matched than were
+      returned. Advance `resultOffset` by the page size until it is absent or false.
+  limits:
+    max_record_count: 1000
+    standard_max_record_count: 2000
+    standard_max_record_count_no_geometry: 32000
+    tile_max_record_count: 4000
+    max_ids_count: 1000000
+    note: >-
+      Setting returnGeometry=false raises the per-request ceiling from 1,000 to 32,000 features,
+      which is the practical way to bulk-read the 880,623-feature layer.
+  verified: >-
+    GET /0/query?where=1=1&resultOffset=1000&resultRecordCount=1&outFields=OBJECTID&returnGeometry=false&f=json
+    returned OBJECTID 1001 with exceededTransferLimit true (2026-07-27).
+field_selection:
+  supported: true
+  param: outFields
+  default: '*'
+  distinct: returnDistinctValues=true (supportsDistinct true)
+  note: >-
+    Sparse field selection is native. There is no expansion/embedding concept — the layer has no
+    relationships (`relationships: []`), so there is nothing to expand.
+filtering:
+  attribute:
+    param: where
+    dialect: standardized SQL WHERE (layer sets useStandardizedQueries true)
+    examples:
+    - 1=1
+    - "SUB_NAME='BONNYVILLE'"
+    - DER_CAP_KW > 15000
+  spatial:
+    params: [geometry, geometryType, inSR, spatialRel]
+    relationships:
+    - esriSpatialRelIntersects
+    - esriSpatialRelContains
+    - esriSpatialRelCrosses
+    - esriSpatialRelEnvelopeIntersects
+    - esriSpatialRelIndexIntersects
+    - esriSpatialRelOverlaps
+    - esriSpatialRelTouches
+    - esriSpatialRelWithin
+    - esriSpatialRelDisjoint
+    - esriSpatialRelRelation
+  aggregation:
+    params: [outStatistics, groupByFieldsForStatistics, having]
+    supported_statistics: [COUNT, SUM, AVG, VAR, STDDEV, MIN, MAX, PERCENTILE_CONT, PERCENTILE_DISC, APPROX_PERCENTILE_CONT, APPROX_PERCENTILE_DISC]
+    top_n: /0/queryTopFeatures with a topFilter object (supportsTopFeaturesQuery true)
+content_negotiation:
+  mechanism: >-
+    Format is selected by the `f` query parameter, not by the Accept header. This is an ArcGIS
+    REST convention and it trips clients that expect standard content negotiation.
+  default: html
+  default_note: >-
+    Omitting `f` returns the ArcGIS HTML services directory page, not JSON. Machine clients must
+    always send f=json (or f=geojson / f=pbf).
+  formats:
+    query: [json, geojson, pbf]
+    export: [csv, shapefile, sqlite, geoPackage, filegdb, featureCollection, geojson, kml, excel, parquet]
+  geojson:
+    supported: true
+    standard: RFC 7946
+    verified: GET /0/query?...&f=geojson returned a valid RFC 7946 FeatureCollection (2026-07-27).
+http_semantics:
+  methods: [GET, POST]
+  post_note: >-
+    POST /0/query takes the same parameters as application/x-www-form-urlencoded. Use it when a
+    where clause or geometry exceeds practical URL length. It is a read, not a mutation.
+  status_codes:
+    note: >-
+      ArcGIS REST returns application errors with HTTP 200 and an `{"error": {...}}` body, not a
+      4xx status. An invalid `where` clause and a nonexistent layer id both returned HTTP 200 on
+      2026-07-27. Clients MUST inspect the body for an `error` member; treating HTTP 200 as
+      success will silently swallow every error this API produces. See errors/atco-problem-types.yml.
+error_envelope:
+  shape: '{"error": {"code": <int>, "message": <string>, "details": [<string>, ...]}}'
+  standard: Esri ArcGIS REST error object — NOT RFC 9457 problem+json
+  content_type: application/json
+  transport_status: 200
+tracing:
+  request_id_header: null
+  note: No correlation or request-id header is returned.
+caching:
+  cache_control: 'public, max-age=30, s-maxage=30'
+  layer_cache_max_age: 30
+  etag: not observed
+  note: Responses are cacheable for 30 seconds. The layer descriptor also declares cacheMaxAge 30.
+cors:
+  access_control_allow_origin: '*'
+  note: Browser-callable with no proxy.
+rate_limiting:
+  published_limits: false
+  headers_observed: []
+  note: >-
+    No X-RateLimit-* or Retry-After headers were returned and ATCO publishes no rate-limit
+    policy. The only published ceilings are record-count limits (see pagination.limits), which
+    are transfer limits, not request-rate limits. ArcGIS Online applies platform-level
+    protections that ATCO does not document.
+versioning:
+  scheme: platform version, not API version
+  current: currentVersion 12 (fullVersion 12.0.0)
+  in_url: false
+  note: >-
+    There is no ATCO API version. `currentVersion` is the Esri ArcGIS Online platform release
+    reported by the service and by /arcgis/rest/info; it moves when Esri upgrades the platform,
+    not when ATCO changes the data. The service path itself (AGO_HostingCapacity/FeatureServer)
+    carries no version segment.
+data_freshness:
+  edit_tracking_fields:
+    lastEditDate: 1761939339179
+    dataLastEditDate: 1761939339179
+    schemaLastEditDate: 1761939339179
+  human_readable: '2025-10-31T18:15:39Z (from the layer descriptor, read 2026-07-27)'
+  in_band_field: >-
+    DATELOADED carries the CYME study load date as an unpadded YYYYMMDD string — '20251031' in
+    sampled features, matching the layer edit date. It is a string field, not a date field, so it
+    cannot be filtered with date semantics.
+related:
+- authentication/atco-authentication.yml
+- errors/atco-problem-types.yml
+- lifecycle/atco-lifecycle.yml
+- data-model/atco-data-model.yml

@@ -1,0 +1,82 @@
+generated: '2026-07-27'
+method: derived
+source:
+- mcp/atco-mcp.yml
+- openapi/atco-electric-hosting-capacity-openapi.yml
+note: >-
+  ATCO publishes no MCP server and no GraphQL surface, so there is no live tool list to align
+  against. This crosswalk binds the CANDIDATE tool set in mcp/atco-mcp.yml to the operations in
+  the generated OpenAPI, so each candidate tool carries a real inputSchema (the backing
+  operation's parameters) rather than a guessed one. Confidence is high on every row because
+  both sides were authored from the same verified contract — but the MCP side is a candidate,
+  not a published surface, and that is the honest caveat on the whole document.
+surfaces:
+  openapi:
+    file: openapi/atco-electric-hosting-capacity-openapi.yml
+    method: generated
+    gated: false
+    operations: 5
+  graphql:
+    endpoint: null
+    note: No GraphQL surface exists on any ATCO property.
+  mcp:
+    url: null
+    published: false
+    tools_list_probed: false
+    note: >-
+      No endpoint exists to POST tools/list against. Not "gated" — absent.
+crosswalk:
+- tool: get_hosting_capacity_service_info
+  category: metadata
+  rest:
+  - getFeatureServiceInfo
+  binding: rest
+  confidence: high
+- tool: get_hosting_capacity_layer_info
+  category: metadata
+  rest:
+  - getHostingCapacityLayerInfo
+  binding: rest
+  confidence: high
+  note: >-
+    Also the freshness check — editingInfo.dataLastEditDate on this operation is the only
+    changelog signal this API has.
+- tool: query_hosting_capacity
+  category: query
+  rest:
+  - queryHostingCapacity
+  binding: rest
+  confidence: high
+  note: >-
+    One tool fans out over several response shapes on the same operation: a FeatureSet, a
+    count (returnCountOnly), a distinct-value set (returnDistinctValues), an extent
+    (returnExtentOnly), an id list (returnIdsOnly) or GeoJSON (f=geojson). An implementer may
+    prefer to split these into narrower tools for model legibility.
+- tool: query_hosting_capacity_bulk
+  category: query
+  rest:
+  - queryHostingCapacityByPost
+  binding: rest
+  confidence: high
+  note: Same parameter set as query_hosting_capacity, form-encoded. Read-only despite the POST method.
+- tool: query_top_hosting_capacity_features
+  category: query
+  rest:
+  - queryTopHostingCapacityFeatures
+  binding: rest
+  confidence: high
+mcp_only: []
+mcp_only_note: >-
+  None. There is no MCP or GraphQL surface exposing capability that REST does not, because there
+  is no MCP or GraphQL surface at all.
+rest_only: []
+rest_only_note: >-
+  None. Every operation in the OpenAPI has a candidate tool — the API is small enough that full
+  coverage is trivial.
+coverage:
+  tools_named: 5
+  tools_bound: 5
+  mcp_only: 0
+  rest_operations_total: 5
+  rest_operations_with_tool: 5
+  binding_rate: 1.0

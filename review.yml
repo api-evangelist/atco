@@ -158,6 +158,17 @@ downloadableContracts:
   specsHarvested: 0
   esriDescriptorsHarvested: 2
   openapiDirectory: openapi/
+  enrichmentRound2026_07_27: >-
+    Re-checked and still true: ATCO publishes no OpenAPI. Contract discovery was re-run against
+    the API host root as well as the docs hosts — https://services7.arcgis.com/openapi.json
+    returns 403 (Esri edge), and /openapi.json, /swagger.json and /api-docs return 404 on every
+    ATCO host. No GraphQL and no MCP endpoint exists to introspect. The ArcGIS tenant service
+    listing (GET /cw2emabghNLkoYlB/arcgis/rest/services?f=json, HTTP 200) confirms exactly one
+    public FeatureServer — AGO_HostingCapacity — so there is no second undiscovered API. What
+    changed is that the enrichment round GENERATED an OpenAPI 3.1 from the two verbatim Esri
+    descriptors plus live anonymous probes, saved at
+    openapi/atco-electric-hosting-capacity-openapi.yml. It is an API Evangelist artifact, not an
+    ATCO one, and it is labelled as such in its own info block and in apis.yml.
   note: >-
     No OpenAPI or Swagger document exists anywhere on the ATCO estate. What was
     harvested into openapi/ are two Esri ArcGIS REST service descriptors — real,
