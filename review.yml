@@ -1,0 +1,452 @@
+aid: atco
+name: ATCO
+review:
+  question: >-
+    Does any consumer energy data mandate reach ATCO, does it expose a consumer
+    energy data API, and does it publish any genuinely open grid or market data?
+  answer: >-
+    No mandate reaches ATCO — Alberta has no Green Button regulation, ATCO is not
+    a Green Button Alliance member, and it is absent from the public Australian
+    CDR energy data holder register. There is no consumer data API. There is,
+    unexpectedly, a real open grid data API: ATCO Electric's DER hosting capacity
+    feature service, anonymously queryable with no signup. No OpenAPI or Swagger
+    definition exists anywhere on the estate.
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  homeMarket: Canada
+  tier: utility-retailer
+
+mandate:
+  regime: none
+  status: not-applicable
+  instrument: none
+  appliesToThisOrganization: false
+  whyNoMandateApplies:
+    - >-
+      Ontario Regulation 633/21 (Energy Data), the only Green Button mandate in
+      Canada, binds Ontario local distribution companies. ATCO's regulated wires
+      and pipes businesses are in Alberta (ATCO Electric, ATCO Gas, ATCO
+      Pipelines). ATCO does not distribute electricity or natural gas in Ontario,
+      so O. Reg. 633/21 does not reach it. Alberta's own regulators — the Alberta
+      Utilities Commission and the AESO — have imposed no equivalent consumer
+      energy data right.
+    - >-
+      Australia's Consumer Data Right energy sector was checked directly rather
+      than assumed. GET https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary
+      (HTTP 200, header x-v: 1, fetched 2026-07-27) returned 84 energy data
+      holder brands. No brand name contains "ATCO". ATCO Australia operates gas
+      distribution infrastructure in Western Australia; the CDR energy
+      designation covers energy retailers operating through the National
+      Electricity Market, which does not include Western Australia and does not
+      include gas distributors. ATCO is therefore not a designated CDR data
+      holder and is not on the register.
+    - >-
+      Green Button voluntary adoption was checked and not found.
+      https://www.greenbuttonalliance.org/members returned HTTP 200 and contains
+      no occurrence of "atco". https://www.greenbuttonalliance.org/certified
+      returned HTTP 404. The string "green button" does not appear on
+      https://www.atco.com/en-ca/for-home.html, https://electric.atco.com/en-ca.html,
+      https://gas.atco.com/en-ca.html, or
+      https://www.atco.com/en-ca/for-home/natural-gas/our-services/gas-meters.html
+      (all HTTP 200, grepped case-insensitively, zero hits each).
+  claimVersusImplementationNote: >-
+    There is no compliance claim to discount here. ATCO makes no Green Button
+    claim, no CDR claim, and no consumer data API claim anywhere on its web
+    estate. Recorded as regime "none" / status "not-applicable" on negative
+    evidence from three independent registers plus the company's own sites, not
+    on absence of search results.
+
+dataStandard:
+  name: no energy data standard reference found
+  detail: >-
+    No Green Button / NAESB ESPI, no CDR Consumer Data Standards, no OCPP, no
+    OCPI, no OpenADR, no IEEE 2030.5, and no IEC CIM 61968/61970 reference was
+    found on atco.com, electric.atco.com, gas.atco.com, or atcoenergy.com. ATCO
+    runs EV charging projects (Peaks to Prairies, Alberta EV Corridor, Edmonton
+    curbside EV charging, all listed in the en-ca sitemap) but publishes no OCPP
+    or OCPI surface for them.
+  onlyMachineReadableContract: >-
+    Esri ArcGIS REST Feature Service (currentVersion 12). This is a geospatial
+    API convention, not an energy data standard, but it is self-describing and
+    it is the only machine-readable contract ATCO publishes. Both descriptors
+    were harvested verbatim into openapi/.
+
+consumerVersusMarketData:
+  consumer_data_api: false
+  consumerDataNote: >-
+    No third party can obtain an individual ATCO customer's usage or billing data
+    through any documented API. ATCO Energy, the competitive Alberta retailer,
+    routes "My Account" at https://myaccount.atcoenergy.com through an HTTP 301
+    to https://store.atco.com/ccrz__CCSiteLogin — a Salesforce CloudCraze (ccrz)
+    commerce login. That is a customer login for a customer's own data, not an
+    API. https://www.atcoenergy.com/api returned HTTP 301 to "/" — a redirect to
+    the homepage, not an API root. https://www.atcoenergy.com/developers returned
+    HTTP 404. There is no consent framework, no third-party onboarding, and no
+    published usage data export of any kind.
+  market_data_open: true
+  marketDataNote: >-
+    This is the finding for ATCO and it is the inverse of the Ontario utilities.
+    ATCO Electric publishes DER hosting capacity for its Alberta distribution
+    system as a public, anonymously queryable Esri ArcGIS REST feature service at
+    https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
+    (HTTP 200). No key, no signup, no referer check, no licence click-through.
+    GET .../FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json returned
+    {"count":880623} anonymously on 2026-07-27. Ownership is confirmed, not
+    inferred: the ArcGIS item 7b4d2b3dcecb4a509f34cbfc3587ff3e is titled "ATCO
+    Electric Hosting Capacity", description "CYME Hosting Capacity Map", access
+    "public", owner "timothy.oladunni_AET", and the containing web application
+    fa9c52c758b64f90ada01c9d27609d8d declares portalUrl
+    https://atco.maps.arcgis.com, whose /sharing/rest/portals/self returns urlKey
+    "ATCO". ATCO Electric links the application itself from its own pages —
+    .../new-connections-changes/connect-grid.model.json contains
+    https://atco.maps.arcgis.com/apps/webappviewer/index.html?id=fa9c52c758b64f90ada01c9d27609d8d
+    and .../new-connections-changes/micro-generation.model.json contains the
+    arcgis.com form of the same application. Beyond this one dataset, ATCO
+    publishes no open data portal, no system or market feed, and no documented
+    outage API; Alberta wholesale market and system data is published by the
+    AESO, a separate organization.
+  theSplit: >-
+    Open grid data, closed consumer data — the exact opposite of Hydro One, where
+    a mandate produced a real but undiscoverable consumer data API and zero open
+    grid data. ATCO has no mandate at all and yet published the more open API of
+    the two. Nothing compelled the hosting capacity service; it exists because
+    micro-generation applicants needed it, and the openness is a side effect of
+    shipping it on ArcGIS Online rather than a data-sharing policy.
+
+accessGate:
+  gate: self-serve
+  whatADeveloperMustDo:
+    - >-
+      For the open grid data: nothing. Issue an anonymous HTTPS GET against
+      https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0/query
+      with standard ArcGIS REST query parameters. No account, no key, no token,
+      no application form, no licence agreement. Capabilities are "Query" only
+      and maxRecordCount is 1000, so paginate with resultOffset/resultRecordCount.
+    - >-
+      For consumer usage or billing data: there is no path. A retail customer can
+      log in to My Account at https://store.atco.com/ccrz__CCSiteLogin to see
+      their own bills. A third party has no mechanism at all — no OAuth, no
+      consent flow, no vendor onboarding form, no contact address published for
+      data access.
+  selfServe: true
+  gatedOverall: false
+  gateSplitNote: >-
+    The single access_gate value is self-serve because the only real API ATCO
+    publishes is completely ungated. The consumer side is honestly
+    customer-account-required and there is no developer route through it.
+
+authModel:
+  scheme: none — anonymous, unauthenticated HTTPS
+  detail: >-
+    The hosting capacity feature service accepts anonymous requests. No token
+    parameter is required and no 499/498 ArcGIS token error is returned. No API
+    key, OAuth 2.0, OpenID Connect, mTLS, or accreditation applies.
+  openidConnectDiscovery: >-
+    Not served. https://www.atco.com/.well-known/openid-configuration returned
+    HTTP 404 and https://www.atcoenergy.com/.well-known/openid-configuration
+    returned HTTP 404. https://poweroutage.atco.com/.well-known/openid-configuration
+    returned HTTP 200 but the body is the Flutter single-page-app index.html, not
+    a discovery document.
+  consumerAuth: >-
+    Salesforce CloudCraze (ccrz) customer login at
+    https://store.atco.com/ccrz__CCSiteLogin. Human login only; no documented
+    machine grant.
+
+downloadableContracts:
+  openapiFound: false
+  swaggerFound: false
+  specsHarvested: 0
+  esriDescriptorsHarvested: 2
+  openapiDirectory: openapi/
+  note: >-
+    No OpenAPI or Swagger document exists anywhere on the ATCO estate. What was
+    harvested into openapi/ are two Esri ArcGIS REST service descriptors — real,
+    machine-readable, self-describing API contracts, but NOT OpenAPI. They are
+    filed under openapi/ with an ".esri.json" suffix so they are never mistaken
+    for OpenAPI documents. Both parse as JSON.
+  artifacts:
+    - path: openapi/atco-electric-hosting-capacity-featureserver.esri.json
+      sourceURL: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer?f=json
+      httpStatus: 200
+      fetched: '2026-07-27'
+      format: Esri ArcGIS REST FeatureServer descriptor (JSON)
+      note: >-
+        serviceDescription "AGO Hosting Capacity", currentVersion 12,
+        capabilities "Query", maxRecordCount 1000, one layer — id 0,
+        "Hosting Capacity (KW)".
+    - path: openapi/atco-electric-hosting-capacity-layer-0.esri.json
+      sourceURL: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0?f=json
+      httpStatus: 200
+      fetched: '2026-07-27'
+      format: Esri ArcGIS REST Feature Layer descriptor (JSON)
+      note: >-
+        geometryType esriGeometryPolyline. Fields OBJECTID, FEEDER, PHASE,
+        SUB_NAME, SUB_NUM, DATELOADED, DER_CAP_KW, DER_CAP_KW1, PROJECT_AREA,
+        SE_ANNO_CAD_DATA, Shape__Length.
+
+developerPortal:
+  exists: false
+  note: >-
+    Every conventional developer host was probed and none resolves in DNS
+    (curl exit code 6, reported as status 0 below). There is no /developers,
+    /api, /docs, or /data path on any ATCO web property. The only page in any
+    ATCO sitemap matching "developer" is
+    https://gas.atco.com/en-ca/services/connections/developers-consultants.html,
+    which addresses land developers and consultants, not software developers.
+
+probes:
+  - url: https://atco.com
+    status: 200
+  - url: https://www.atco.com
+    status: 200
+  - url: https://www.atco.com/en-ca.html
+    status: 200
+  - url: https://developer.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://developers.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://api.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://docs.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://data.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://maps.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://arcgis.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://outagemap.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://outages.atco.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://api.atcoenergy.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://developer.atcoenergy.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://my.atcoenergy.com
+    status: 0
+    note: DNS does not resolve.
+  - url: https://www.atco.com/developers
+    status: 404
+  - url: https://www.atco.com/api
+    status: 404
+  - url: https://www.atco.com/openapi.json
+    status: 404
+  - url: https://www.atco.com/swagger.json
+    status: 404
+  - url: https://www.atco.com/api-docs
+    status: 404
+  - url: https://www.atco.com/.well-known/openid-configuration
+    status: 404
+  - url: https://www.atco.com/.well-known/security.txt
+    status: 404
+  - url: https://www.atco.com/sitemap.xml
+    status: 404
+    note: Root sitemap 404s; robots.txt lists per-locale sitemaps instead.
+  - url: https://www.atco.com/robots.txt
+    status: 200
+    note: >-
+      Allow all. Lists seven locale sitemaps (en-ca, fr-ca, en-us, en-au, en-mx,
+      es-mx, en-cl). No API paths disclosed.
+  - url: https://www.atco.com/en-ca/sitemap.xml
+    status: 200
+    note: 274 URLs. Zero matches for api/developer/green button/smart meter/open data.
+  - url: https://electric.atco.com
+    status: 200
+  - url: https://electric.atco.com/robots.txt
+    status: 200
+  - url: https://electric.atco.com/en-ca/sitemap.xml
+    status: 200
+    note: 101 URLs. No developer or data pages.
+  - url: https://electric.atco.com/api
+    status: 404
+  - url: https://gas.atco.com
+    status: 200
+  - url: https://gas.atco.com/en-ca/sitemap.xml
+    status: 200
+    note: >-
+      Only "developer" hit is /services/connections/developers-consultants.html —
+      land developers, not software.
+  - url: https://gas.atco.com/api
+    status: 404
+  - url: https://www.atcoenergy.com
+    status: 200
+  - url: https://www.atcoenergy.com/sitemap.xml
+    status: 200
+    note: 207 URLs. Webflow-hosted marketing site. No data or developer pages.
+  - url: https://www.atcoenergy.com/api
+    status: 301
+    note: Redirects to "/". Not an API root.
+  - url: https://www.atcoenergy.com/developers
+    status: 404
+  - url: https://www.atcoenergy.com/openapi.json
+    status: 404
+  - url: https://www.atcoenergy.com/swagger.json
+    status: 404
+  - url: https://www.atcoenergy.com/.well-known/openid-configuration
+    status: 404
+  - url: https://myaccount.atcoenergy.com
+    status: 301
+    note: Redirects to https://store.atco.com/ccrz__CCSiteLogin (Salesforce CloudCraze).
+  - url: https://store.atco.com
+    status: 200
+    note: Customer commerce/login portal.
+  - url: https://poweroutage.atco.com/map
+    status: 200
+    note: >-
+      Flutter web single-page app using @googlemaps/markerclusterer. Its backend
+      is undocumented. /api, /api/outages, /outages.json, /swagger.json,
+      /openapi.json, /.well-known/openid-configuration and /assets/config.json
+      all returned HTTP 200 with the SPA index.html body — catch-all false
+      positives, confirmed by opening each. Nothing was recorded as an API.
+  - url: https://electric.atco.com/en-ca/power-outages.html
+    status: 200
+    note: AEM SPA; no data feed referenced in the rendered model.
+  - url: https://electric.atco.com/en-ca/power-outages.model.json
+    status: 200
+    note: >-
+      AEM SPA model retrieved (65,297 bytes). Only external links are
+      ucahelps.alberta.ca, facebook.com/ATCOGroup, x.com/ATCOElectric.
+  - url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.model.json
+    status: 200
+    note: >-
+      Contains https://www.arcgis.com/apps/webappviewer/index.html?id=fa9c52c758b64f90ada01c9d27609d8d
+      and https://poweroutage.atco.com/map. This is the on-site link that makes
+      the hosting capacity map a published ATCO surface rather than a find.
+  - url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/connect-grid.model.json
+    status: 200
+    note: >-
+      Contains https://atco.maps.arcgis.com/apps/webappviewer/index.html?id=fa9c52c758b64f90ada01c9d27609d8d.
+  - url: https://www.arcgis.com/sharing/rest/content/items/fa9c52c758b64f90ada01c9d27609d8d?f=json
+    status: 200
+    note: >-
+      Web Mapping Application, title "Electric Hosting Capacity", snippet "ATCO
+      Electric Hosting Capacity", owner timothy.oladunni_AET.
+  - url: https://www.arcgis.com/sharing/rest/content/items/fa9c52c758b64f90ada01c9d27609d8d/data?f=json
+    status: 200
+    note: >-
+      App config declares portalUrl https://atco.maps.arcgis.com, title
+      "DER HOSTING CAPACITY MAP", map itemId 08462ffc4c824393b2e0ba1d44ba4476.
+  - url: https://atco.maps.arcgis.com/sharing/rest/content/items/08462ffc4c824393b2e0ba1d44ba4476/data?f=json
+    status: 200
+    note: >-
+      Web map operational layers — "Hosting Capacity (kW)" pointing at the
+      AGO_HostingCapacity FeatureServer layer 0, plus an Alberta township base
+      layer from geospatial.alberta.ca.
+  - url: https://atco.maps.arcgis.com/sharing/rest/portals/self?f=json
+    status: 200
+    note: urlKey "ATCO" — confirms the ArcGIS Online organization is ATCO's.
+  - url: https://www.arcgis.com/sharing/rest/content/items/7b4d2b3dcecb4a509f34cbfc3587ff3e?f=json
+    status: 200
+    note: >-
+      Feature Service item "ATCO Electric Hosting Capacity", access "public",
+      licenseInfo null, accessInformation empty, modified 2025-10-31.
+  - url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer?f=json
+    status: 200
+    note: Harvested to openapi/atco-electric-hosting-capacity-featureserver.esri.json.
+  - url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0?f=json
+    status: 200
+    note: Harvested to openapi/atco-electric-hosting-capacity-layer-0.esri.json.
+  - url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json
+    status: 200
+    note: Anonymous query returned {"count":880623}.
+  - url: https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary
+    status: 200
+    note: >-
+      Public Australian CDR register. 84 energy data holder brands returned.
+      No brand name matches "atco" (case-insensitive). Negative evidence that
+      ATCO is not a designated CDR energy data holder.
+  - url: https://www.greenbuttonalliance.org/members
+    status: 200
+    note: No occurrence of "atco".
+  - url: https://www.greenbuttonalliance.org/certified
+    status: 404
+  - url: https://gis.atco.com
+    status: 200
+    note: >-
+      Resolves to a default IIS Windows Server placeholder page behind a
+      Microsoft Entra application proxy (x-ms-proxy-* headers), Content-Length 0
+      on HEAD. Not a public GIS server.
+  - url: https://api.github.com/orgs/atco
+    status: 404
+  - url: https://api.github.com/orgs/atcoenergy
+    status: 404
+    note: >-
+      No ATCO GitHub organization exists. A GitHub org search for "atco" returned
+      only unrelated accounts (atcoder, atcomputing, etc.).
+  - url: https://www.linkedin.com/company/atco
+    status: 200
+    note: >-
+      NOT ATCO Ltd — title is "ATCO Properties and Management", a different
+      company. Deliberately not recorded. The correct handle is atco-group.
+  - url: https://www.linkedin.com/company/atco-group
+    status: 200
+    note: Confirmed ATCO Ltd — "housing, energy and defence", 111,475 followers.
+
+sources:
+  - url: https://www.atco.com/en-ca.html
+    type: Website
+    note: Corporate identity.
+  - url: https://electric.atco.com/en-ca.html
+    type: Website
+    note: >-
+      "ATCO Electric delivers safe, reliable electricity across Alberta."
+      (meta description, verbatim).
+  - url: https://gas.atco.com/en-ca.html
+    type: Website
+    note: >-
+      "ATCO Gas delivers safe, reliable natural gas to homes and businesses,
+      supporting communities with dependable energy services across Alberta."
+      (meta description, verbatim).
+  - url: https://www.atcoenergy.com/
+    type: Website
+    note: ATCO Energy competitive Alberta retailer — energy plans and home services.
+  - url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
+    type: Documentation
+    note: On-site link to the DER hosting capacity map.
+  - url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
+    type: APIReference
+    note: The one real public API. Self-describing ArcGIS REST service.
+  - url: https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary
+    type: Register
+    note: Australian CDR energy data holder register — ATCO absent.
+  - url: https://www.greenbuttonalliance.org/members
+    type: Standard
+    note: Green Button Alliance member list — ATCO absent.
+
+findings:
+  summary: >-
+    ATCO is the control case for the energy sector's central question, and it
+    answers it backwards. No consumer data mandate touches it: Ontario's Green
+    Button regulation stops at the Ontario border, Alberta's regulators have
+    written no equivalent, and the public Australian CDR energy register — 84
+    brands, checked directly — does not list ATCO. It is not a Green Button
+    Alliance member. So the consumer side is exactly what an unmandated market
+    produces: a Salesforce commerce login where a customer can look at their own
+    bill, and nothing whatsoever for a third party. And yet the open side is more
+    open than any of the mandated Ontario utilities managed. ATCO Electric's DER
+    hosting capacity — 880,623 feeder segments with per-feeder kW capacity — sits
+    on a public Esri feature service that anyone can query anonymously, with no
+    key, no signup, no licence and no rate-limit page, linked from ATCO's own
+    micro-generation and grid-connection pages. Nobody made them do it. It exists
+    because micro-generation applicants needed to know where the grid has room,
+    and because publishing it on ArcGIS Online makes it an API by default. The
+    lesson runs in the opposite direction from Hydro One: a mandate produced a
+    real API that no developer can find, while an operational need produced an
+    open API that nobody was obliged to publish. Neither organization has a
+    developer portal, an OpenAPI, or a single line of API documentation.
+  posture: unmandated · open grid data · closed consumer data · no developer program
+  gated: false
+  openapiHarvested: false
+  esriDescriptorsHarvested: 2

@@ -1,0 +1,124 @@
+aid: atco
+url: https://raw.githubusercontent.com/api-evangelist/atco/refs/heads/main/apis.yml
+name: ATCO
+kind: company
+description: >-
+  ATCO Ltd. (TSX: ACO.X) is a Calgary, Alberta diversified global corporation and
+  the controlling shareholder of Canadian Utilities Limited, through which it runs
+  the regulated energy businesses that make it one of western Canada's largest
+  utility groups. It sits across several tiers of the value chain at once: ATCO
+  Electric owns and operates electricity transmission and distribution across
+  Alberta, ATCO Gas and ATCO Pipelines distribute and transmit natural gas in the
+  province, ATCO EnPower builds storage, renewables and hydrogen assets, ATCO
+  Australia operates gas distribution infrastructure in Western Australia, and
+  ATCO Energy is a competitive retailer selling electricity, natural gas and home
+  services to Alberta customers. Its API posture is the mirror image of the
+  Ontario utilities: no consumer energy data mandate reaches it at all. Alberta
+  has no Green Button regulation, ATCO is not on the Green Button Alliance member
+  list, and it does not appear in the public Australian CDR energy data holder
+  register — so there is no consumer data API, and a customer's usage and billing
+  data lives only behind the My Account login on a Salesforce commerce portal.
+  What ATCO does publish, unmandated and without any signup at all, is real open
+  grid data: ATCO Electric's DER hosting capacity map is served from a public,
+  anonymously queryable Esri ArcGIS REST feature service carrying 880,623 feeder
+  segment features, linked directly from ATCO Electric's own micro-generation and
+  grid-connection pages. Open grid data, closed consumer data, no developer
+  portal, and no OpenAPI anywhere on the estate.
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: true
+  label: Free · Anonymous, no signup (open grid data only)
+  confidence: high
+  source:
+  - documentation
+  generated: '2026-07-27'
+  method: manual
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+tags:
+- Energy
+- Canada
+- Utilities
+- Electricity
+- Gas
+- Grid
+- Distribution
+- Transmission
+- DER
+- Solar
+- Renewables
+- Open Data
+- Geospatial
+- Alberta
+created: '2026-07-27'
+modified: '2026-07-27'
+specificationVersion: '0.19'
+apis:
+- aid: atco:atco-electric-hosting-capacity-feature-service
+  name: ATCO Electric Hosting Capacity Feature Service
+  description: >-
+    ATCO Electric's distributed energy resource (DER) hosting capacity data,
+    published as a public Esri ArcGIS REST feature service and surfaced through
+    the "DER HOSTING CAPACITY MAP" web application that ATCO Electric links from
+    its micro-generation and connect-to-the-grid pages. The service is registered
+    in ATCO's own ArcGIS Online organization (urlKey "ATCO", item id
+    7b4d2b3dcecb4a509f34cbfc3587ff3e, item title "ATCO Electric Hosting Capacity",
+    description "CYME Hosting Capacity Map", access "public"). A single polyline
+    feature layer, "Hosting Capacity (KW)", exposes FEEDER, PHASE, SUB_NAME,
+    SUB_NUM, DATELOADED, DER_CAP_KW, DER_CAP_KW1 and PROJECT_AREA fields. An
+    anonymous, unauthenticated query against layer 0 returned a feature count of
+    880,623 on 2026-07-27. Service capabilities are "Query" only, maxRecordCount
+    1000. There is no ATCO documentation page, no OpenAPI definition, and no
+    published usage terms — the contract is the self-describing ArcGIS REST
+    service descriptor itself, harvested verbatim into openapi/.
+  humanURL: https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
+  baseURL: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
+  tags:
+  - Grid
+  - DER
+  - Hosting Capacity
+  - Distribution
+  - Geospatial
+  - Open Data
+  - Micro-generation
+  properties:
+  - type: APIReference
+    url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer?f=json
+  - type: APIReference
+    url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0?f=json
+  - type: ServiceDescriptor
+    url: openapi/atco-electric-hosting-capacity-featureserver.esri.json
+  - type: ServiceDescriptor
+    url: openapi/atco-electric-hosting-capacity-layer-0.esri.json
+  - type: Documentation
+    url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
+  - type: Documentation
+    url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/connect-grid.html
+  - type: Application
+    url: https://atco.maps.arcgis.com/apps/webappviewer/index.html?id=fa9c52c758b64f90ada01c9d27609d8d
+  - type: Standard
+    url: https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/
+common:
+- type: Website
+  url: https://www.atco.com/
+- type: About
+  url: https://www.atco.com/en-ca/about-us.html
+- type: Website
+  url: https://electric.atco.com/en-ca.html
+- type: Website
+  url: https://gas.atco.com/en-ca.html
+- type: Website
+  url: https://www.atcoenergy.com/
+- type: SignIn
+  url: https://store.atco.com/ccrz__CCSiteLogin
+- type: LinkedIn
+  url: https://www.linkedin.com/company/atco-group
+- type: Regulator
+  url: https://www.auc.ab.ca/
+- type: Regulator
+  url: https://www.aeso.ca/
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
