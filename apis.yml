@@ -54,7 +54,7 @@ tags:
 - Alberta
 created: '2026-07-27'
 modified: '2026-07-27'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: atco:atco-electric-hosting-capacity-feature-service
   name: ATCO Electric Hosting Capacity Feature Service
