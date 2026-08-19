@@ -1,0 +1,266 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ATCO Electric Hosting Capacity Feature Service",
+    "version": "12"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Service",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get feature service metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/",
+            "params": [
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+              }
+            ]
+          },
+          "docs": "Returns the self-describing FeatureServer descriptor — currentVersion, serviceDescription, capabilities, maxRecordCount, spatial reference, full extent and the layer list."
+        },
+        {
+          "info": {
+            "name": "Get hosting capacity feature layer metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0",
+            "params": [
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+              }
+            ]
+          },
+          "docs": "Returns the layer 0 descriptor — field definitions, object id field, geometry type, extent, drawing info, advanced query capabilities and record-count limits."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query hosting capacity feeder segments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0/query",
+            "params": [
+              {
+                "name": "where",
+                "value": "",
+                "type": "query",
+                "description": "A standardized SQL WHERE clause over the layer's fields (the layer sets `useStandardizedQueries: true`). Use `1=1` for all features."
+              },
+              {
+                "name": "objectIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated OBJECTID list. maxIdsCount is 1,000,000."
+              },
+              {
+                "name": "geometry",
+                "value": "",
+                "type": "query",
+                "description": "Spatial filter geometry, as JSON or comma-separated envelope/point coordinates."
+              },
+              {
+                "name": "geometryType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "inSR",
+                "value": "",
+                "type": "query",
+                "description": "Spatial reference of the input geometry. The layer's native spatial reference is wkid 102185 / latestWkid 3401 (NAD83 / Alberta 3TM ref merid 115 W)."
+              },
+              {
+                "name": "spatialRel",
+                "value": "",
+                "type": "query",
+                "description": "Spatial relationship to apply. Values taken verbatim from the layer's `supportedSpatialRelationships`."
+              },
+              {
+                "name": "outFields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated field list, or `*` for all fields."
+              },
+              {
+                "name": "returnGeometry",
+                "value": "",
+                "type": "query",
+                "description": "Include feature geometry. Setting this to false raises the per-request ceiling to `standardMaxRecordCountNoGeometry` (32,000)."
+              },
+              {
+                "name": "outSR",
+                "value": "",
+                "type": "query",
+                "description": "Output spatial reference wkid, e.g. 4326 for WGS84."
+              },
+              {
+                "name": "orderByFields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated `FIELD [ASC|DESC]` list. Layer advertises `supportsOrderBy: true`."
+              },
+              {
+                "name": "groupByFieldsForStatistics",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated group-by field list, used with `outStatistics`."
+              },
+              {
+                "name": "outStatistics",
+                "value": "",
+                "type": "query",
+                "description": "JSON array of statistic definitions. Supported statistic types include COUNT, SUM, AVG, VAR, STDDEV, MIN, MAX and the percentile family."
+              },
+              {
+                "name": "returnDistinctValues",
+                "value": "",
+                "type": "query",
+                "description": "Return distinct values for `outFields`. Layer advertises `supportsDistinct: true`."
+              },
+              {
+                "name": "returnCountOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only the matching feature count."
+              },
+              {
+                "name": "returnExtentOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only the extent of matching features. Layer advertises `supportsReturningQueryExtent: true`."
+              },
+              {
+                "name": "returnIdsOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only OBJECTIDs of matching features."
+              },
+              {
+                "name": "resultOffset",
+                "value": "",
+                "type": "query",
+                "description": "Zero-based offset into the result set. Layer advertises `supportsPagination: true`. Pair with `resultRecordCount` and always order by a stable field."
+              },
+              {
+                "name": "resultRecordCount",
+                "value": "",
+                "type": "query",
+                "description": "Page size. maxRecordCount is 1000; standardMaxRecordCount 2000; 32000 with `returnGeometry=false`."
+              },
+              {
+                "name": "having",
+                "value": "",
+                "type": "query",
+                "description": "SQL HAVING clause applied to grouped statistics. Layer advertises `supportsHavingClause: true`."
+              },
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+              }
+            ]
+          },
+          "docs": "Query the \"Hosting Capacity (KW)\" layer with a SQL `where` clause, an optional spatial filter, and optional statistics. Supports pagination via `resultOffset` / `resultRecordCount` (maxRecordCount 1000; `standardMaxRecordCount` 2000, and 32000 when `returnGeometry=false`). Set `returnCountOnly=true` for a feature count, `returnDistinctValues=true` for a distinct-value list, and `f=geojson` for RFC 7946 GeoJSON."
+        },
+        {
+          "info": {
+            "name": "Query hosting capacity feeder segments (form POST)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0/query",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Identical to the GET form, submitted as `application/x-www-form-urlencoded`. Use this when the `where` clause or geometry exceeds practical URL length. Verified anonymously on 2026-07-27."
+        },
+        {
+          "info": {
+            "name": "Query top features per group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0/queryTopFeatures",
+            "params": [
+              {
+                "name": "topFilter",
+                "value": "{\"groupByFields\":\"SUB_NAME\",\"topCount\":1,\"orderByFields\":\"DER_CAP_KW DESC\"}",
+                "type": "query",
+                "description": "JSON object with `groupByFields`, `topCount` and `orderByFields` selecting the top N features per group."
+              },
+              {
+                "name": "where",
+                "value": "",
+                "type": "query",
+                "description": "A standardized SQL WHERE clause over the layer's fields (the layer sets `useStandardizedQueries: true`). Use `1=1` for all features."
+              },
+              {
+                "name": "outFields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated field list, or `*` for all fields."
+              },
+              {
+                "name": "returnGeometry",
+                "value": "",
+                "type": "query",
+                "description": "Include feature geometry. Setting this to false raises the per-request ceiling to `standardMaxRecordCountNoGeometry` (32,000)."
+              },
+              {
+                "name": "resultOffset",
+                "value": "",
+                "type": "query",
+                "description": "Zero-based offset into the result set. Layer advertises `supportsPagination: true`. Pair with `resultRecordCount` and always order by a stable field."
+              },
+              {
+                "name": "resultRecordCount",
+                "value": "",
+                "type": "query",
+                "description": "Page size. maxRecordCount is 1000; standardMaxRecordCount 2000; 32000 with `returnGeometry=false`."
+              },
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+              }
+            ]
+          },
+          "docs": "Return the top N features within each group — for example the highest DER capacity segment per substation. The layer advertises `supportsTopFeaturesQuery: true`; a `where` clause is required in addition to `topFilter`. Verified anonymously on 2026-07-27."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

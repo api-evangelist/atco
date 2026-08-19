@@ -2,13 +2,12 @@ generated: '2026-07-27'
 method: derived
 status: candidate
 source: openapi/atco-electric-hosting-capacity-openapi.yml
-search_note: >-
-  No ATCO MCP server exists. Searched the ATCO web estate (no developer portal, no /mcp, no
-  /.well-known/ai-plugin.json on any host — all 404), GitHub (no atco or atcoenergy
-  organization; api.github.com/orgs/atco returns 404), and npm/@modelcontextprotocol. There is
-  no hosted or remote MCP endpoint to introspect, so no tools/list call was possible. Everything
-  below is a CANDIDATE tool set derived from the OpenAPI this pipeline generated — it describes
-  what an MCP server over this API should expose, not something ATCO publishes.
+search_note: No ATCO MCP server exists. Searched the ATCO web estate (no developer portal, no /mcp, no
+  /.well-known/ai-plugin.json on any host — all 404), GitHub (no atco or atcoenergy organization; api.github.com/orgs/atco
+  returns 404), and npm/@modelcontextprotocol. There is no hosted or remote MCP endpoint to introspect,
+  so no tools/list call was possible. Everything below is a CANDIDATE tool set derived from the OpenAPI
+  this pipeline generated — it describes what an MCP server over this API should expose, not something
+  ATCO publishes.
 server:
   name: atco-hosting-capacity
   published: false
@@ -19,60 +18,55 @@ upstream_api:
   name: ATCO Electric Hosting Capacity Feature Service
   base_url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
   auth: none — anonymous
-  auth_note: >-
-    A server implementing these tools needs no credential handling at all, which makes this an
+  auth_note: A server implementing these tools needs no credential handling at all, which makes this an
     unusually simple MCP target. The tools are all reads.
 tools:
 - name: get_hosting_capacity_service_info
-  description: >-
-    Get the ATCO Electric hosting capacity feature service descriptor — capabilities,
-    maxRecordCount, spatial reference, extent and layer list.
+  description: Get the ATCO Electric hosting capacity feature service descriptor — capabilities, maxRecordCount,
+    spatial reference, extent and layer list.
   source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#getFeatureServiceInfo
   read_only: true
 - name: get_hosting_capacity_layer_info
-  description: >-
-    Get the field definitions and query capabilities of the "Hosting Capacity (KW)" layer,
+  description: Get the field definitions and query capabilities of the "Hosting Capacity (KW)" layer,
     including the editingInfo timestamps that reveal when the data was last refreshed.
   source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#getHostingCapacityLayerInfo
   read_only: true
 - name: query_hosting_capacity
-  description: >-
-    Query DER hosting capacity feeder segments by SQL where clause, spatial filter and/or
-    statistics. Supports paging (resultOffset / resultRecordCount), counts (returnCountOnly),
-    distinct values (returnDistinctValues) and GeoJSON output (f=geojson).
+  description: Query DER hosting capacity feeder segments by SQL where clause, spatial filter and/or statistics.
+    Supports paging (resultOffset / resultRecordCount), counts (returnCountOnly), distinct values (returnDistinctValues)
+    and GeoJSON output (f=geojson).
   source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#queryHostingCapacity
   read_only: true
-  input_schema_source: >-
-    Inherits the real parameter set of the backing operation — where, objectIds, geometry,
-    geometryType, inSR, spatialRel, outFields, returnGeometry, outSR, orderByFields,
-    groupByFieldsForStatistics, outStatistics, returnDistinctValues, returnCountOnly,
-    returnExtentOnly, returnIdsOnly, resultOffset, resultRecordCount, having, f.
+  input_schema_source: Inherits the real parameter set of the backing operation — where, objectIds, geometry,
+    geometryType, inSR, spatialRel, outFields, returnGeometry, outSR, orderByFields, groupByFieldsForStatistics,
+    outStatistics, returnDistinctValues, returnCountOnly, returnExtentOnly, returnIdsOnly, resultOffset,
+    resultRecordCount, having, f.
 - name: query_hosting_capacity_bulk
-  description: >-
-    Form-POST variant of the query tool, for where clauses or geometries too long for a URL.
+  description: Form-POST variant of the query tool, for where clauses or geometries too long for a URL.
     Functionally a read despite the HTTP method.
   source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#queryHostingCapacityByPost
   read_only: true
 - name: query_top_hosting_capacity_features
-  description: >-
-    Return the top N feeder segments within each group — for example the highest DER capacity
+  description: Return the top N feeder segments within each group — for example the highest DER capacity
     segment per substation. Requires both topFilter and where.
   source_operation: openapi/atco-electric-hosting-capacity-openapi.yml#queryTopHostingCapacityFeatures
   read_only: true
 implementation_notes:
-- >-
-  A server must always send f=json. Omitting it returns the ArcGIS HTML services-directory page,
-  which will break a JSON-parsing tool handler.
-- >-
-  Errors arrive with HTTP status 200 and an {"error": {...}} body. A handler that branches on the
-  HTTP status will surface ArcGIS errors to the model as successful empty results. Parse the body.
-- >-
-  maxRecordCount is 1000 (32,000 with returnGeometry=false). A tool returning features must
-  paginate on exceededTransferLimit or explicitly tell the model the result is truncated.
-- >-
-  The layer has 880,623 features. Unbounded queries will blow a model's context — default to
-  returnCountOnly or aggregate (outStatistics / groupByFieldsForStatistics) and only return raw
-  features when narrowly filtered.
+- A server must always send f=json. Omitting it returns the ArcGIS HTML services-directory page, which
+  will break a JSON-parsing tool handler.
+- 'Errors arrive with HTTP status 200 and an {"error": {...}} body. A handler that branches on the HTTP
+  status will surface ArcGIS errors to the model as successful empty results. Parse the body.'
+- maxRecordCount is 1000 (32,000 with returnGeometry=false). A tool returning features must paginate on
+  exceededTransferLimit or explicitly tell the model the result is truncated.
+- The layer has 880,623 features. Unbounded queries will blow a model's context — default to returnCountOnly
+  or aggregate (outStatistics / groupByFieldsForStatistics) and only return raw features when narrowly
+  filtered.
 related:
 - mcp/atco-tool-crosswalk.yml
 - skills/atco-query-hosting-capacity.md
+deployment:
+  mode: none
+  verified: derived
+  tools: 5
+  checked: '2026-08-12'
+  source: catalog MCP census

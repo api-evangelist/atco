@@ -1,0 +1,804 @@
+{
+  "item": [
+    {
+      "id": "0898efd1-fcfd-49a5-8b8e-62fe1b8a602c",
+      "name": "Service",
+      "description": {
+        "content": "Feature service and feature layer metadata",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2c80bbbd-d322-4289-97f8-9e8840624226",
+          "name": "Get feature service metadata",
+          "request": {
+            "name": "Get feature service metadata",
+            "description": {
+              "content": "Returns the self-describing FeatureServer descriptor — currentVersion, serviceDescription, capabilities, maxRecordCount, spatial reference, full extent and the layer list.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "html",
+                  "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5de88b33-fe05-48b4-9f00-d05c9d67e7b2",
+              "name": "Feature service descriptor, or an ArcGIS error envelope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "f",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currentVersion\": 12,\n  \"serviceItemId\": \"7b4d2b3dcecb4a509f34cbfc3587ff3e\",\n  \"serviceDescription\": \"AGO Hosting Capacity\",\n  \"description\": \"CYME Hosting Capacity Map\",\n  \"capabilities\": \"Query\",\n  \"maxRecordCount\": 1000,\n  \"layers\": [\n    {\n      \"id\": 0,\n      \"name\": \"Hosting Capacity (KW)\",\n      \"type\": \"Feature Layer\",\n      \"geometryType\": \"esriGeometryPolyline\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4083d4d1-f0a6-4837-b542-3ba22a1d0e96",
+          "name": "Get hosting capacity feature layer metadata",
+          "request": {
+            "name": "Get hosting capacity feature layer metadata",
+            "description": {
+              "content": "Returns the layer 0 descriptor — field definitions, object id field, geometry type, extent, drawing info, advanced query capabilities and record-count limits.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "0"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "html",
+                  "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9dd6fc29-f8b5-4860-aafe-33f717324372",
+              "name": "Feature layer descriptor, or an ArcGIS error envelope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "0"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "f",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1410,\n  \"name\": \"string\",\n  \"type\": \"string\",\n  \"geometryType\": \"string\",\n  \"objectIdField\": \"string\",\n  \"displayField\": \"string\",\n  \"maxRecordCount\": 9700,\n  \"standardMaxRecordCount\": 2895,\n  \"standardMaxRecordCountNoGeometry\": 6451,\n  \"capabilities\": \"string\",\n  \"extent\": {\n    \"xmin\": 7072.245986464885,\n    \"ymin\": 3444.7875099751423,\n    \"xmax\": 906.2604204804247,\n    \"ymax\": 3444.1321534824156,\n    \"spatialReference\": {\n      \"wkid\": 8470,\n      \"latestWkid\": 9565\n    }\n  },\n  \"fields\": [\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"alias\": \"string\",\n      \"sqlType\": \"string\",\n      \"length\": 6051,\n      \"nullable\": true,\n      \"editable\": true\n    },\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"alias\": \"string\",\n      \"sqlType\": \"string\",\n      \"length\": 6047,\n      \"nullable\": false,\n      \"editable\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "3a89aee3-1022-4c7b-9ba6-141d9cae69e0",
+      "name": "Query",
+      "description": {
+        "content": "Read-only queries against the hosting capacity feature layer",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "752bd5fc-3e65-43a7-9ff6-0d81a9d1ccd3",
+          "name": "Query hosting capacity feeder segments",
+          "request": {
+            "name": "Query hosting capacity feeder segments",
+            "description": {
+              "content": "Query the \"Hosting Capacity (KW)\" layer with a SQL `where` clause, an optional spatial filter, and optional statistics. Supports pagination via `resultOffset` / `resultRecordCount` (maxRecordCount 1000; `standardMaxRecordCount` 2000, and 32000 when `returnGeometry=false`). Set `returnCountOnly=true` for a feature count, `returnDistinctValues=true` for a distinct-value list, and `f=geojson` for RFC 7946 GeoJSON.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "0",
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "where",
+                  "value": "<string>",
+                  "description": "A standardized SQL WHERE clause over the layer's fields (the layer sets `useStandardizedQueries: true`). Use `1=1` for all features."
+                },
+                {
+                  "disabled": false,
+                  "key": "objectIds",
+                  "value": "<string>",
+                  "description": "Comma-separated OBJECTID list. maxIdsCount is 1,000,000."
+                },
+                {
+                  "disabled": false,
+                  "key": "geometry",
+                  "value": "<string>",
+                  "description": "Spatial filter geometry, as JSON or comma-separated envelope/point coordinates."
+                },
+                {
+                  "disabled": false,
+                  "key": "geometryType",
+                  "value": "esriGeometryEnvelope"
+                },
+                {
+                  "disabled": false,
+                  "key": "inSR",
+                  "value": "<string>",
+                  "description": "Spatial reference of the input geometry. The layer's native spatial reference is wkid 102185 / latestWkid 3401 (NAD83 / Alberta 3TM ref merid 115 W)."
+                },
+                {
+                  "disabled": false,
+                  "key": "spatialRel",
+                  "value": "esriSpatialRelIntersects",
+                  "description": "Spatial relationship to apply. Values taken verbatim from the layer's `supportedSpatialRelationships`."
+                },
+                {
+                  "disabled": false,
+                  "key": "outFields",
+                  "value": "*",
+                  "description": "Comma-separated field list, or `*` for all fields."
+                },
+                {
+                  "disabled": false,
+                  "key": "returnGeometry",
+                  "value": "true",
+                  "description": "Include feature geometry. Setting this to false raises the per-request ceiling to `standardMaxRecordCountNoGeometry` (32,000)."
+                },
+                {
+                  "disabled": false,
+                  "key": "outSR",
+                  "value": "<string>",
+                  "description": "Output spatial reference wkid, e.g. 4326 for WGS84."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderByFields",
+                  "value": "<string>",
+                  "description": "Comma-separated `FIELD [ASC|DESC]` list. Layer advertises `supportsOrderBy: true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupByFieldsForStatistics",
+                  "value": "<string>",
+                  "description": "Comma-separated group-by field list, used with `outStatistics`."
+                },
+                {
+                  "disabled": false,
+                  "key": "outStatistics",
+                  "value": "<string>",
+                  "description": "JSON array of statistic definitions. Supported statistic types include COUNT, SUM, AVG, VAR, STDDEV, MIN, MAX and the percentile family."
+                },
+                {
+                  "disabled": false,
+                  "key": "returnDistinctValues",
+                  "value": "false",
+                  "description": "Return distinct values for `outFields`. Layer advertises `supportsDistinct: true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "returnCountOnly",
+                  "value": "false",
+                  "description": "Return only the matching feature count."
+                },
+                {
+                  "disabled": false,
+                  "key": "returnExtentOnly",
+                  "value": "false",
+                  "description": "Return only the extent of matching features. Layer advertises `supportsReturningQueryExtent: true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "returnIdsOnly",
+                  "value": "false",
+                  "description": "Return only OBJECTIDs of matching features."
+                },
+                {
+                  "disabled": false,
+                  "key": "resultOffset",
+                  "value": "<integer>",
+                  "description": "Zero-based offset into the result set. Layer advertises `supportsPagination: true`. Pair with `resultRecordCount` and always order by a stable field."
+                },
+                {
+                  "disabled": false,
+                  "key": "resultRecordCount",
+                  "value": "<integer>",
+                  "description": "Page size. maxRecordCount is 1000; standardMaxRecordCount 2000; 32000 with `returnGeometry=false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "having",
+                  "value": "<string>",
+                  "description": "SQL HAVING clause applied to grouped statistics. Layer advertises `supportsHavingClause: true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "html",
+                  "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a2a89a6b-28bd-49f3-b82d-3ae7a0cd9c5a",
+              "name": "A feature set, a count, a distinct-value set, or an ArcGIS error envelope (ArcGIS returns application errors with HTTP 200).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "0",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "where",
+                      "value": "1=1"
+                    },
+                    {
+                      "key": "objectIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "geometry",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "geometryType",
+                      "value": "esriGeometryEnvelope"
+                    },
+                    {
+                      "key": "inSR",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "spatialRel",
+                      "value": "esriSpatialRelIntersects"
+                    },
+                    {
+                      "key": "outFields",
+                      "value": "*"
+                    },
+                    {
+                      "key": "returnGeometry",
+                      "value": "true"
+                    },
+                    {
+                      "key": "outSR",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderByFields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "groupByFieldsForStatistics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "outStatistics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "returnDistinctValues",
+                      "value": "false"
+                    },
+                    {
+                      "key": "returnCountOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "returnExtentOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "returnIdsOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "resultOffset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "resultRecordCount",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "having",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 880623\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48997fe0-2780-4884-8f24-41f0af0c5885",
+          "name": "Query hosting capacity feeder segments (form POST)",
+          "request": {
+            "name": "Query hosting capacity feeder segments (form POST)",
+            "description": {
+              "content": "Identical to the GET form, submitted as `application/x-www-form-urlencoded`. Use this when the `where` clause or geometry exceeds practical URL length. Verified anonymously on 2026-07-27.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "0",
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "where",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "objectIds",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "geometry",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "geometryType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "spatialRel",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "outFields",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "returnGeometry",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "outSR",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "orderByFields",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "groupByFieldsForStatistics",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "outStatistics",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "returnDistinctValues",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "returnCountOnly",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "resultOffset",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "resultRecordCount",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a981e662-990e-4d71-b4a8-7eba6eb43ca4",
+              "name": "A feature set, a count, or an ArcGIS error envelope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "0",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "where",
+                      "value": "SUB_NAME='BONNYVILLE'"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "returnCountOnly",
+                      "value": "true"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "f",
+                      "value": "json"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"objectIdFieldName\": \"string\",\n  \"uniqueIdField\": {\n    \"name\": \"string\",\n    \"isSystemMaintained\": false\n  },\n  \"globalIdFieldName\": \"string\",\n  \"geometryType\": \"string\",\n  \"spatialReference\": {\n    \"wkid\": 3409,\n    \"latestWkid\": 4343\n  },\n  \"fields\": [\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"alias\": \"string\",\n      \"sqlType\": \"string\",\n      \"length\": 8912,\n      \"nullable\": false,\n      \"editable\": false\n    },\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"alias\": \"string\",\n      \"sqlType\": \"string\",\n      \"length\": 3354,\n      \"nullable\": true,\n      \"editable\": true\n    }\n  ],\n  \"exceededTransferLimit\": false,\n  \"features\": [\n    {\n      \"attributes\": {\n        \"OBJECTID\": 721,\n        \"FEEDER\": \"700-508\",\n        \"PHASE\": \"B\",\n        \"SUB_NAME\": \"BONNYVILLE\",\n        \"SUB_NUM\": \"700S\",\n        \"DATELOADED\": \"20251031\",\n        \"DER_CAP_KW\": 62.9,\n        \"DER_CAP_KW1\": 62.9,\n        \"PROJECT_AREA\": \"string\",\n        \"SE_ANNO_CAD_DATA\": \"string\",\n        \"Shape__Length\": 678.1124365685673\n      },\n      \"geometry\": {\n        \"paths\": [\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ],\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        ]\n      }\n    },\n    {\n      \"attributes\": {\n        \"OBJECTID\": 8809,\n        \"FEEDER\": \"700-508\",\n        \"PHASE\": \"B\",\n        \"SUB_NAME\": \"BONNYVILLE\",\n        \"SUB_NUM\": \"700S\",\n        \"DATELOADED\": \"20251031\",\n        \"DER_CAP_KW\": 62.9,\n        \"DER_CAP_KW1\": 62.9,\n        \"PROJECT_AREA\": \"string\",\n        \"SE_ANNO_CAD_DATA\": \"string\",\n        \"Shape__Length\": 678.1124365685673\n      },\n      \"geometry\": {\n        \"paths\": [\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ],\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d12e10ac-ba86-4130-be32-bafe367ddcd0",
+          "name": "Query top features per group",
+          "request": {
+            "name": "Query top features per group",
+            "description": {
+              "content": "Return the top N features within each group — for example the highest DER capacity segment per substation. The layer advertises `supportsTopFeaturesQuery: true`; a `where` clause is required in addition to `topFilter`. Verified anonymously on 2026-07-27.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "0",
+                "queryTopFeatures"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "topFilter",
+                  "value": "<string>",
+                  "description": "(Required) JSON object with `groupByFields`, `topCount` and `orderByFields` selecting the top N features per group."
+                },
+                {
+                  "disabled": false,
+                  "key": "where",
+                  "value": "<string>",
+                  "description": "A standardized SQL WHERE clause over the layer's fields (the layer sets `useStandardizedQueries: true`). Use `1=1` for all features."
+                },
+                {
+                  "disabled": false,
+                  "key": "outFields",
+                  "value": "*",
+                  "description": "Comma-separated field list, or `*` for all fields."
+                },
+                {
+                  "disabled": false,
+                  "key": "returnGeometry",
+                  "value": "true",
+                  "description": "Include feature geometry. Setting this to false raises the per-request ceiling to `standardMaxRecordCountNoGeometry` (32,000)."
+                },
+                {
+                  "disabled": false,
+                  "key": "resultOffset",
+                  "value": "<integer>",
+                  "description": "Zero-based offset into the result set. Layer advertises `supportsPagination: true`. Pair with `resultRecordCount` and always order by a stable field."
+                },
+                {
+                  "disabled": false,
+                  "key": "resultRecordCount",
+                  "value": "<integer>",
+                  "description": "Page size. maxRecordCount is 1000; standardMaxRecordCount 2000; 32000 with `returnGeometry=false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "html",
+                  "description": "Response format. The service advertises supportedQueryFormats \"JSON, geoJSON, PBF\"; `html` and `pjson` are also served by ArcGIS REST."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "173dda6b-38a7-4e45-afe3-662274e440e4",
+              "name": "A feature set of the top features per group, or an ArcGIS error envelope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "0",
+                    "queryTopFeatures"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "topFilter",
+                      "value": "{\"groupByFields\":\"SUB_NAME\",\"topCount\":1,\"orderByFields\":\"DER_CAP_KW DESC\"}"
+                    },
+                    {
+                      "key": "where",
+                      "value": "1=1"
+                    },
+                    {
+                      "key": "outFields",
+                      "value": "*"
+                    },
+                    {
+                      "key": "returnGeometry",
+                      "value": "true"
+                    },
+                    {
+                      "key": "resultOffset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "resultRecordCount",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"objectIdFieldName\": \"string\",\n  \"uniqueIdField\": {\n    \"name\": \"string\",\n    \"isSystemMaintained\": false\n  },\n  \"globalIdFieldName\": \"string\",\n  \"geometryType\": \"string\",\n  \"spatialReference\": {\n    \"wkid\": 3409,\n    \"latestWkid\": 4343\n  },\n  \"fields\": [\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"alias\": \"string\",\n      \"sqlType\": \"string\",\n      \"length\": 8912,\n      \"nullable\": false,\n      \"editable\": false\n    },\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"alias\": \"string\",\n      \"sqlType\": \"string\",\n      \"length\": 3354,\n      \"nullable\": true,\n      \"editable\": true\n    }\n  ],\n  \"exceededTransferLimit\": false,\n  \"features\": [\n    {\n      \"attributes\": {\n        \"OBJECTID\": 721,\n        \"FEEDER\": \"700-508\",\n        \"PHASE\": \"B\",\n        \"SUB_NAME\": \"BONNYVILLE\",\n        \"SUB_NUM\": \"700S\",\n        \"DATELOADED\": \"20251031\",\n        \"DER_CAP_KW\": 62.9,\n        \"DER_CAP_KW1\": 62.9,\n        \"PROJECT_AREA\": \"string\",\n        \"SE_ANNO_CAD_DATA\": \"string\",\n        \"Shape__Length\": 678.1124365685673\n      },\n      \"geometry\": {\n        \"paths\": [\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ],\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        ]\n      }\n    },\n    {\n      \"attributes\": {\n        \"OBJECTID\": 8809,\n        \"FEEDER\": \"700-508\",\n        \"PHASE\": \"B\",\n        \"SUB_NAME\": \"BONNYVILLE\",\n        \"SUB_NUM\": \"700S\",\n        \"DATELOADED\": \"20251031\",\n        \"DER_CAP_KW\": 62.9,\n        \"DER_CAP_KW1\": 62.9,\n        \"PROJECT_AREA\": \"string\",\n        \"SE_ANNO_CAD_DATA\": \"string\",\n        \"Shape__Length\": 678.1124365685673\n      },\n      \"geometry\": {\n        \"paths\": [\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ],\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "517aac94-004b-4507-b28e-81ef37e7be39",
+    "name": "ATCO Electric Hosting Capacity Feature Service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "ATCO Electric publishes distributed energy resource (DER) hosting capacity for its Alberta distribution system as an Esri ArcGIS Online hosted feature service. A single polyline feature layer, \"Hosting Capacity (KW)\" (layer id 0), carries one feature per feeder segment with the substation, circuit, phase and the DER capacity in kW that the segment can host. An anonymous count query returned 880,623 features and 135 distinct substation names on 2026-07-27.\n\nThis OpenAPI document was GENERATED by API Evangelist from the service's own self-describing ArcGIS REST descriptors (harvested verbatim to openapi/atco-electric-hosting-capacity-featureserver.esri.json and openapi/atco-electric-hosting-capacity-layer-0.esri.json) plus live, anonymous probes of the running service on 2026-07-27. ATCO publishes no OpenAPI of its own and no API documentation page; the parameter set below is the subset of the Esri ArcGIS REST Feature Service query specification that this service actually advertises (capabilities \"Query\") and that was exercised successfully against the live endpoint. Nothing here is invented: every path, parameter and field is present in the harvested descriptor or was confirmed by a live request.\n\nAccess is completely ungated: no API key, no token, no signup, no referer check and no licence click-through. `Access-Control-Allow-Origin: *` is returned, so the service is directly callable from a browser. maxRecordCount is 1000, so paginate with `resultOffset` and `resultRecordCount` and watch `exceededTransferLimit` in the response.\n\nNote on error semantics: ArcGIS REST returns application errors with HTTP status 200 and an `{\"error\": {...}}` body rather than a 4xx status. See errors/atco-problem-types.yml.\n\nContact Support:\n Name: ATCO Electric",
+      "type": "text/plain"
+    }
+  }
+}
