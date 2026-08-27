@@ -56,47 +56,28 @@ created: '2026-07-27'
 modified: '2026-07-27'
 specificationVersion: '0.23'
 apis:
-- aid: atco:atco-electric-hosting-capacity-feature-service
-  name: ATCO Electric Hosting Capacity Feature Service
-  description: >-
-    ATCO Electric's distributed energy resource (DER) hosting capacity data,
-    published as a public Esri ArcGIS REST feature service and surfaced through
-    the "DER HOSTING CAPACITY MAP" web application that ATCO Electric links from
-    its micro-generation and connect-to-the-grid pages. The service is registered
-    in ATCO's own ArcGIS Online organization (urlKey "ATCO", item id
-    7b4d2b3dcecb4a509f34cbfc3587ff3e, item title "ATCO Electric Hosting Capacity",
-    description "CYME Hosting Capacity Map", access "public"). A single polyline
-    feature layer, "Hosting Capacity (KW)", exposes FEEDER, PHASE, SUB_NAME,
-    SUB_NUM, DATELOADED, DER_CAP_KW, DER_CAP_KW1 and PROJECT_AREA fields. An
-    anonymous, unauthenticated query against layer 0 returned a feature count of
-    880,623 on 2026-07-27. Service capabilities are "Query" only, maxRecordCount
-    1000. There is no ATCO documentation page, no OpenAPI definition, and no
-    published usage terms — the contract is the self-describing ArcGIS REST
-    service descriptor itself, harvested verbatim into openapi/.
-  humanURL: https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
-  baseURL: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
+- aid: atco:atco-query-api
+  name: ATCO Query API
+  description: Read-only queries against the hosting capacity feature layer
+  humanURL: >-
+    https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
+  baseURL: >-
+    https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
   tags:
-  - Grid
-  - DER
-  - Hosting Capacity
-  - Distribution
-  - Geospatial
-  - Open Data
-  - Micro-generation
+  - Query
   properties:
+  - type: OpenAPI
+    url: openapi/atco-query-api-openapi.yml
   - type: APIReference
-    url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer?f=json
+    url: >-
+      https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer?f=json
   - type: APIReference
-    url: https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0?f=json
+    url: >-
+      https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0?f=json
   - type: ServiceDescriptor
     url: openapi/atco-electric-hosting-capacity-featureserver.esri.json
   - type: ServiceDescriptor
     url: openapi/atco-electric-hosting-capacity-layer-0.esri.json
-  - type: OpenAPI
-    name: OpenAPI 3.1 (API Evangelist generated from the Esri descriptors — ATCO publishes none)
-    url: openapi/atco-electric-hosting-capacity-openapi.yml
-  - type: Overlay
-    url: overlays/atco-electric-hosting-capacity-overlay.yaml
   - type: Examples
     url: examples/atco-hosting-capacity-examples.yml
   - type: DataModel
@@ -104,17 +85,62 @@ apis:
   - type: ErrorCatalog
     url: errors/atco-problem-types.yml
   - type: Arazzo
-    name: ATCO Electric DER siting shortlist
     url: arazzo/atco-der-siting-shortlist.yml
   - type: Documentation
-    url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
+    url: >-
+      https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
   - type: Documentation
-    url: https://electric.atco.com/en-ca/connections-services/new-connections-changes/connect-grid.html
+    url: >-
+      https://electric.atco.com/en-ca/connections-services/new-connections-changes/connect-grid.html
   - type: Application
-    url: https://atco.maps.arcgis.com/apps/webappviewer/index.html?id=fa9c52c758b64f90ada01c9d27609d8d
+    url: >-
+      https://atco.maps.arcgis.com/apps/webappviewer/index.html?id=fa9c52c758b64f90ada01c9d27609d8d
+  - type: Standard
+    url: https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/
+- aid: atco:atco-service-api
+  name: ATCO Service API
+  description: Feature service and feature layer metadata
+  humanURL: >-
+    https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
+  baseURL: >-
+    https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
+  tags:
+  - Service
+  properties:
+  - type: OpenAPI
+    url: openapi/atco-service-api-openapi.yml
+  - type: APIReference
+    url: >-
+      https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer?f=json
+  - type: APIReference
+    url: >-
+      https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer/0?f=json
+  - type: ServiceDescriptor
+    url: openapi/atco-electric-hosting-capacity-featureserver.esri.json
+  - type: ServiceDescriptor
+    url: openapi/atco-electric-hosting-capacity-layer-0.esri.json
+  - type: Examples
+    url: examples/atco-hosting-capacity-examples.yml
+  - type: DataModel
+    url: data-model/atco-data-model.yml
+  - type: ErrorCatalog
+    url: errors/atco-problem-types.yml
+  - type: Arazzo
+    url: arazzo/atco-der-siting-shortlist.yml
+  - type: Documentation
+    url: >-
+      https://electric.atco.com/en-ca/connections-services/new-connections-changes/micro-generation.html
+  - type: Documentation
+    url: >-
+      https://electric.atco.com/en-ca/connections-services/new-connections-changes/connect-grid.html
+  - type: Application
+    url: >-
+      https://atco.maps.arcgis.com/apps/webappviewer/index.html?id=fa9c52c758b64f90ada01c9d27609d8d
   - type: Standard
     url: https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/
 common:
+- type: Overlay
+  url: overlays/atco-electric-hosting-capacity-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/atco-agentic-access.yml
 - type: DomainSecurity
