@@ -1,0 +1,20 @@
+{
+  "provider": "atco",
+  "sources": [
+    "atco-electric-hosting-capacity-openapi.yml"
+  ],
+  "outputs": [
+    "atco-query-api-openapi.yml",
+    "atco-service-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/atco-electric-hosting-capacity-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "atco-electric-hosting-capacity-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: written (+2 apis, 2 total)"
+  ],
+  "skipped": []
+}
