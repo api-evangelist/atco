@@ -13,8 +13,11 @@ info:
     against openapi/atco-electric-hosting-capacity-openapi.yml; every operationId below exists
     verbatim in that spec.
 sourceDescriptions:
-- name: hostingCapacity
-  url: ../openapi/atco-electric-hosting-capacity-openapi.yml
+- name: queryApi
+  url: ../openapi/atco-query-api-openapi.yml
+  type: openapi
+- name: serviceApi
+  url: ../openapi/atco-service-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: der-siting-shortlist
