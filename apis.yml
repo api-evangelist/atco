@@ -170,9 +170,10 @@ common:
   url: well-known/atco-well-known.yml
 - type: LLMsTxt
   url: llms/atco-llms.txt
-- type: MCPServer
+- type: X-MCPServerCandidate
   name: Candidate MCP tool set (derived — ATCO publishes no MCP server)
   url: mcp/atco-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
 - type: ToolCrosswalk
   url: mcp/atco-tool-crosswalk.yml
 - type: AgentSkill
