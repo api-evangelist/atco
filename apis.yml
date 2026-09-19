@@ -117,6 +117,8 @@ apis:
   baseURL: >-
     https://services7.arcgis.com/cw2emabghNLkoYlB/arcgis/rest/services/AGO_HostingCapacity/FeatureServer
   tags:
+  - Services
+  tags_raw:
   - Service
   properties:
   - type: OpenAPI
