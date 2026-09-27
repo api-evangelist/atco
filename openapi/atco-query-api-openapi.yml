@@ -130,26 +130,18 @@ paths:
                 - $ref: '#/components/schemas/ErrorEnvelope'
 components:
   parameters:
-    topFilter:
-      name: topFilter
-      in: query
-      required: true
-      description: JSON object with `groupByFields`, `topCount` and `orderByFields` selecting the top N features per group.
-      schema:
-        type: string
-      example: '{"groupByFields":"SUB_NAME","topCount":1,"orderByFields":"DER_CAP_KW DESC"}'
-    geometry:
-      name: geometry
+    outSR:
+      name: outSR
       in: query
       required: false
-      description: Spatial filter geometry, as JSON or comma-separated envelope/point coordinates.
+      description: Output spatial reference wkid, e.g. 4326 for WGS84.
       schema:
         type: string
-    groupByFieldsForStatistics:
-      name: groupByFieldsForStatistics
+    objectIds:
+      name: objectIds
       in: query
       required: false
-      description: Comma-separated group-by field list, used with `outStatistics`.
+      description: Comma-separated OBJECTID list. maxIdsCount is 1,000,000.
       schema:
         type: string
     having:
@@ -159,66 +151,6 @@ components:
       description: 'SQL HAVING clause applied to grouped statistics. Layer advertises `supportsHavingClause: true`.'
       schema:
         type: string
-    where:
-      name: where
-      in: query
-      required: false
-      description: 'A standardized SQL WHERE clause over the layer''s fields (the layer sets `useStandardizedQueries: true`). Use `1=1` for all features.'
-      schema:
-        type: string
-      examples:
-        all:
-          value: 1=1
-        bySubstation:
-          value: SUB_NAME='BONNYVILLE'
-        byCapacity:
-          value: DER_CAP_KW > 15000
-    orderByFields:
-      name: orderByFields
-      in: query
-      required: false
-      description: 'Comma-separated `FIELD [ASC|DESC]` list. Layer advertises `supportsOrderBy: true`.'
-      schema:
-        type: string
-    returnCountOnly:
-      name: returnCountOnly
-      in: query
-      required: false
-      description: Return only the matching feature count.
-      schema:
-        type: boolean
-        default: false
-    outFields:
-      name: outFields
-      in: query
-      required: false
-      description: Comma-separated field list, or `*` for all fields.
-      schema:
-        type: string
-        default: '*'
-    returnIdsOnly:
-      name: returnIdsOnly
-      in: query
-      required: false
-      description: Return only OBJECTIDs of matching features.
-      schema:
-        type: boolean
-        default: false
-    returnGeometry:
-      name: returnGeometry
-      in: query
-      required: false
-      description: Include feature geometry. Setting this to false raises the per-request ceiling to `standardMaxRecordCountNoGeometry` (32,000).
-      schema:
-        type: boolean
-        default: true
-    outSR:
-      name: outSR
-      in: query
-      required: false
-      description: Output spatial reference wkid, e.g. 4326 for WGS84.
-      schema:
-        type: string
     inSR:
       name: inSR
       in: query
@@ -226,80 +158,6 @@ components:
       description: Spatial reference of the input geometry. The layer's native spatial reference is wkid 102185 / latestWkid 3401 (NAD83 / Alberta 3TM ref merid 115 W).
       schema:
         type: string
-    outStatistics:
-      name: outStatistics
-      in: query
-      required: false
-      description: JSON array of statistic definitions. Supported statistic types include COUNT, SUM, AVG, VAR, STDDEV, MIN, MAX and the percentile family.
-      schema:
-        type: string
-    returnExtentOnly:
-      name: returnExtentOnly
-      in: query
-      required: false
-      description: 'Return only the extent of matching features. Layer advertises `supportsReturningQueryExtent: true`.'
-      schema:
-        type: boolean
-        default: false
-    resultOffset:
-      name: resultOffset
-      in: query
-      required: false
-      description: 'Zero-based offset into the result set. Layer advertises `supportsPagination: true`. Pair with `resultRecordCount` and always order by a stable field.'
-      schema:
-        type: integer
-        minimum: 0
-    geometryType:
-      name: geometryType
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-        - esriGeometryPoint
-        - esriGeometryMultipoint
-        - esriGeometryPolyline
-        - esriGeometryPolygon
-        - esriGeometryEnvelope
-        default: esriGeometryEnvelope
-    f:
-      name: f
-      in: query
-      required: false
-      description: Response format. The service advertises supportedQueryFormats "JSON, geoJSON, PBF"; `html` and `pjson` are also served by ArcGIS REST.
-      schema:
-        type: string
-        enum:
-        - json
-        - geojson
-        - pbf
-        - pjson
-        - html
-        default: html
-    objectIds:
-      name: objectIds
-      in: query
-      required: false
-      description: Comma-separated OBJECTID list. maxIdsCount is 1,000,000.
-      schema:
-        type: string
-    returnDistinctValues:
-      name: returnDistinctValues
-      in: query
-      required: false
-      description: 'Return distinct values for `outFields`. Layer advertises `supportsDistinct: true`.'
-      schema:
-        type: boolean
-        default: false
-    resultRecordCount:
-      name: resultRecordCount
-      in: query
-      required: false
-      description: Page size. maxRecordCount is 1000; standardMaxRecordCount 2000; 32000 with `returnGeometry=false`.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 32000
     spatialRel:
       name: spatialRel
       in: query
@@ -319,14 +177,149 @@ components:
         - esriSpatialRelDisjoint
         - esriSpatialRelRelation
         default: esriSpatialRelIntersects
+    returnDistinctValues:
+      name: returnDistinctValues
+      in: query
+      required: false
+      description: 'Return distinct values for `outFields`. Layer advertises `supportsDistinct: true`.'
+      schema:
+        type: boolean
+        default: false
+    topFilter:
+      name: topFilter
+      in: query
+      required: true
+      description: JSON object with `groupByFields`, `topCount` and `orderByFields` selecting the top N features per group.
+      schema:
+        type: string
+      example: '{"groupByFields":"SUB_NAME","topCount":1,"orderByFields":"DER_CAP_KW DESC"}'
+    where:
+      name: where
+      in: query
+      required: false
+      description: 'A standardized SQL WHERE clause over the layer''s fields (the layer sets `useStandardizedQueries: true`). Use `1=1` for all features.'
+      schema:
+        type: string
+      examples:
+        all:
+          value: 1=1
+        bySubstation:
+          value: SUB_NAME='BONNYVILLE'
+        byCapacity:
+          value: DER_CAP_KW > 15000
+    returnExtentOnly:
+      name: returnExtentOnly
+      in: query
+      required: false
+      description: 'Return only the extent of matching features. Layer advertises `supportsReturningQueryExtent: true`.'
+      schema:
+        type: boolean
+        default: false
+    returnCountOnly:
+      name: returnCountOnly
+      in: query
+      required: false
+      description: Return only the matching feature count.
+      schema:
+        type: boolean
+        default: false
+    outFields:
+      name: outFields
+      in: query
+      required: false
+      description: Comma-separated field list, or `*` for all fields.
+      schema:
+        type: string
+        default: '*'
+    returnGeometry:
+      name: returnGeometry
+      in: query
+      required: false
+      description: Include feature geometry. Setting this to false raises the per-request ceiling to `standardMaxRecordCountNoGeometry` (32,000).
+      schema:
+        type: boolean
+        default: true
+    orderByFields:
+      name: orderByFields
+      in: query
+      required: false
+      description: 'Comma-separated `FIELD [ASC|DESC]` list. Layer advertises `supportsOrderBy: true`.'
+      schema:
+        type: string
+    resultRecordCount:
+      name: resultRecordCount
+      in: query
+      required: false
+      description: Page size. maxRecordCount is 1000; standardMaxRecordCount 2000; 32000 with `returnGeometry=false`.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 32000
+    geometryType:
+      name: geometryType
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+        - esriGeometryPoint
+        - esriGeometryMultipoint
+        - esriGeometryPolyline
+        - esriGeometryPolygon
+        - esriGeometryEnvelope
+        default: esriGeometryEnvelope
+    resultOffset:
+      name: resultOffset
+      in: query
+      required: false
+      description: 'Zero-based offset into the result set. Layer advertises `supportsPagination: true`. Pair with `resultRecordCount` and always order by a stable field.'
+      schema:
+        type: integer
+        minimum: 0
+    outStatistics:
+      name: outStatistics
+      in: query
+      required: false
+      description: JSON array of statistic definitions. Supported statistic types include COUNT, SUM, AVG, VAR, STDDEV, MIN, MAX and the percentile family.
+      schema:
+        type: string
+    returnIdsOnly:
+      name: returnIdsOnly
+      in: query
+      required: false
+      description: Return only OBJECTIDs of matching features.
+      schema:
+        type: boolean
+        default: false
+    f:
+      name: f
+      in: query
+      required: false
+      description: Response format. The service advertises supportedQueryFormats "JSON, geoJSON, PBF"; `html` and `pjson` are also served by ArcGIS REST.
+      schema:
+        type: string
+        enum:
+        - json
+        - geojson
+        - pbf
+        - pjson
+        - html
+        default: html
+    geometry:
+      name: geometry
+      in: query
+      required: false
+      description: Spatial filter geometry, as JSON or comma-separated envelope/point coordinates.
+      schema:
+        type: string
+    groupByFieldsForStatistics:
+      name: groupByFieldsForStatistics
+      in: query
+      required: false
+      description: Comma-separated group-by field list, used with `outStatistics`.
+      schema:
+        type: string
   schemas:
-    CountResult:
-      type: object
-      properties:
-        count:
-          type: integer
-          examples:
-          - 880623
     ErrorEnvelope:
       type: object
       description: ArcGIS REST error envelope. Note that it is returned with HTTP status 200, not a 4xx — clients MUST inspect the body for an `error` member rather than relying on the status code.
@@ -342,23 +335,6 @@ components:
               type: array
               items:
                 type: string
-    FieldInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        alias:
-          type: string
-        sqlType:
-          type: string
-        length:
-          type: integer
-        nullable:
-          type: boolean
-        editable:
-          type: boolean
     SpatialReference:
       type: object
       properties:
@@ -366,82 +342,6 @@ components:
           type: integer
         latestWkid:
           type: integer
-    GeoJSONFeatureCollection:
-      type: object
-      description: RFC 7946 GeoJSON, returned when `f=geojson`. Verified against the live service 2026-07-27.
-      properties:
-        type:
-          type: string
-          const: FeatureCollection
-        properties:
-          type: object
-          properties:
-            exceededTransferLimit:
-              type: boolean
-        features:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                const: Feature
-              id:
-                type: integer
-              geometry:
-                type:
-                - object
-                - 'null'
-              properties:
-                $ref: '#/components/schemas/HostingCapacityAttributes'
-    FeatureSet:
-      type: object
-      properties:
-        objectIdFieldName:
-          type: string
-        uniqueIdField:
-          type: object
-          properties:
-            name:
-              type: string
-            isSystemMaintained:
-              type: boolean
-        globalIdFieldName:
-          type: string
-        geometryType:
-          type: string
-        spatialReference:
-          $ref: '#/components/schemas/SpatialReference'
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldInfo'
-        exceededTransferLimit:
-          type: boolean
-          description: True when more features match than were returned. This is the pagination signal — keep advancing `resultOffset` until it is absent or false.
-        features:
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
-    Feature:
-      type: object
-      properties:
-        attributes:
-          $ref: '#/components/schemas/HostingCapacityAttributes'
-        geometry:
-          type:
-          - object
-          - 'null'
-          description: Esri polyline geometry — a `paths` array of coordinate arrays.
-          properties:
-            paths:
-              type: array
-              items:
-                type: array
-                items:
-                  type: array
-                  items:
-                    type: number
     QueryRequest:
       type: object
       description: Form-encoded body for the POST form of the query operation.
@@ -558,6 +458,106 @@ components:
           description: Segment length in metres (geometryProperties.units esriMeters). Read-only.
           examples:
           - 678.1124365685673
+    FieldInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        alias:
+          type: string
+        sqlType:
+          type: string
+        length:
+          type: integer
+        nullable:
+          type: boolean
+        editable:
+          type: boolean
+    CountResult:
+      type: object
+      properties:
+        count:
+          type: integer
+          examples:
+          - 880623
+    FeatureSet:
+      type: object
+      properties:
+        objectIdFieldName:
+          type: string
+        uniqueIdField:
+          type: object
+          properties:
+            name:
+              type: string
+            isSystemMaintained:
+              type: boolean
+        globalIdFieldName:
+          type: string
+        geometryType:
+          type: string
+        spatialReference:
+          $ref: '#/components/schemas/SpatialReference'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldInfo'
+        exceededTransferLimit:
+          type: boolean
+          description: True when more features match than were returned. This is the pagination signal — keep advancing `resultOffset` until it is absent or false.
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    GeoJSONFeatureCollection:
+      type: object
+      description: RFC 7946 GeoJSON, returned when `f=geojson`. Verified against the live service 2026-07-27.
+      properties:
+        type:
+          type: string
+          const: FeatureCollection
+        properties:
+          type: object
+          properties:
+            exceededTransferLimit:
+              type: boolean
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                const: Feature
+              id:
+                type: integer
+              geometry:
+                type:
+                - object
+                - 'null'
+              properties:
+                $ref: '#/components/schemas/HostingCapacityAttributes'
+    Feature:
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/HostingCapacityAttributes'
+        geometry:
+          type:
+          - object
+          - 'null'
+          description: Esri polyline geometry — a `paths` array of coordinate arrays.
+          properties:
+            paths:
+              type: array
+              items:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: number
 externalDocs:
   description: Esri ArcGIS REST API — Feature Service reference (the upstream contract this service implements)
   url: https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/
