@@ -70,6 +70,26 @@ paths:
                 $ref: '#/components/schemas/FeatureLayerInfo'
 components:
   schemas:
+    Extent:
+      type: object
+      properties:
+        xmin:
+          type: number
+        ymin:
+          type: number
+        xmax:
+          type: number
+        ymax:
+          type: number
+        spatialReference:
+          $ref: '#/components/schemas/SpatialReference'
+    SpatialReference:
+      type: object
+      properties:
+        wkid:
+          type: integer
+        latestWkid:
+          type: integer
     FeatureServiceInfo:
       type: object
       description: ArcGIS REST FeatureServer descriptor. Harvested verbatim in openapi/atco-electric-hosting-capacity-featureserver.esri.json.
@@ -163,26 +183,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FieldInfo'
-    SpatialReference:
-      type: object
-      properties:
-        wkid:
-          type: integer
-        latestWkid:
-          type: integer
-    Extent:
-      type: object
-      properties:
-        xmin:
-          type: number
-        ymin:
-          type: number
-        xmax:
-          type: number
-        ymax:
-          type: number
-        spatialReference:
-          $ref: '#/components/schemas/SpatialReference'
   parameters:
     f:
       name: f
